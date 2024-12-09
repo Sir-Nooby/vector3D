@@ -1,5 +1,4 @@
 #Vector 3D - An interactive python-based web app for mapping vectors
-#SKIBIDI
 from vpython import *
 
 #Create scene and regulatory conditions
