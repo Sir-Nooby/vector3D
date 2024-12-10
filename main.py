@@ -20,6 +20,11 @@ vectorX, vectorY, vectorZ = None, None, None
 cursor_marker = label(pos=vec(0,0,0), text="", visible=False)
 
 
+scene.up = vec(0, 0, 1)
+scene.camera.pos = vec(0, -distance, distance)
+scene.camera.axis = vec(0, distance, -distance)
+
+
 #Create the 3D Scene
 
 s = sphere(radius=0.05, color=color.white)
