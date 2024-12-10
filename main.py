@@ -3,38 +3,36 @@ from vpython import *
 
 #Create scene and regulatory conditions
 scene = canvas(width=1200, height=500, background=color.white, resizable=False, title="Vector3 - A Vector Mapping Tool")
-
 scene.ambient = color.white * 0.8
 
+global mouse
+mouse = scene.mouse
 distance = 5
+
+plane_normal = vec(0, 1, 0)  
+plane_distance = 0      
 
 mode = "draw"
 modes = ["Choose a mode:", "Draw", "Vector"]
 
-#Create horizonal surface for vectors to rest off
-plane_normal = vec(0, 1, 0)  
-plane_distance = 0           
-
-global mouse
-mouse = scene.mouse
+user_arrow = None
+vectorX, vectorY, vectorZ = None, None, None
+cursor_marker = label(pos=vec(0,0,0), text="", visible=False)
 
 
 #Create the 3D Scene
 
 s = sphere(radius=0.05, color=color.white)
 
-#Generate the cartesian axises
+#Generate the cartesian axes
 x_axis = arrow(pos=vec(0,0,0), axis=vec(distance, 0, 0), color=color.red, round=True, shaftwidth=0.05)
 y_axis = arrow(pos=vec(0,0,0), axis=vec(0, distance, 0), color=color.green, round=True, shaftwidth=0.05)
 z_axis = arrow(pos=vec(0,0,0), axis=vec(0, 0, distance), color=color.blue, round=True, shaftwidth=0.05)
 
-#Generate the inverted cartesian axises
+#Generate the inverted cartesian axes
 x_inv_axis = arrow(pos=vec(0,0,0), axis=vec(-distance, 0, 0), color=color.red, round=True, shaftwidth=0.05)
 y_inv_axis = arrow(pos=vec(0,0,0), axis=vec(0, -distance, 0), color=color.green, round=True, shaftwidth=0.05)
 z_inv_axis = arrow(pos=vec(0,0,0), axis=vec(0, 0, -distance), color=color.blue, round=True, shaftwidth=0.05)
-
-#Just to fix NameError lol #ZakichanWasHere
-vectorX, vectorY, vectorZ = None, None, None
 
 #Define vector draw function
 def vector_draw():
@@ -46,7 +44,7 @@ def vector_draw():
 def vector_simulate():
     current_positon = mouse.pos
     print(current_positon.x, draw_range, current_positon.y, current_positon.z)
-    if current_positon:
+    if current_positon: #The below code is a process to detect if drawn vectors are approraching the edge of the screen
         # if abs(current_positon.x) > (draw_range * 2.25) or abs(current_positon.y * 1.1) > (draw_range) or (current_positon.z) > (draw_range * 2):
         #     user_arrow.color = color.red
         #     scene.waitfor("mousemove")
@@ -77,6 +75,7 @@ def vector_clear():
         print("Please enter a value for all vectors.")
     
 
+
 #Create any userinput functions
 def mode_changer(event): #Detects any mode changes and adjusts keybindings
     global mode
@@ -103,8 +102,10 @@ def mode_changer(event): #Detects any mode changes and adjusts keybindings
         print("Vector Mode Set!")
         vector_create()
 
+
         scene.unbind("mousedown", vector_draw)
         scene.unbind("mousemove", vector_simulate)
+
 
 def show_invertedaxes(event):
     if event.checked:
@@ -116,11 +117,27 @@ def show_invertedaxes(event):
         y_inv_axis.visible = False
         z_inv_axis.visible = False
 
+
+#Define the cursor scanning system
+def cursor_checker(cursor_marker): #SirNooby yo imma code this yo
+    
+    if mouse.pick:
+        if mouse.pick == x_axis:
+            cursor_marker.visible = True
+            cursor_marker.text = "This is the X-Axis!"
+            cursor_marker.pos = mouse.pos
+
+        if user_arrow and mouse.pick == user_arrow:
+            cursor_marker.visible = True
+            cursor_marker.text = "This is a user-made vector! The Magnitude is " + str(round(user_arrow.axis.mag, 3))
+            cursor_marker.pos = mouse.pos
+    else:
+        cursor_marker.visible = False
      
 #Create user objects
 menu(bind=mode_changer, choices=modes, selected="Current", index=0)
 checkbox(bind=show_invertedaxes, text="Show inverted axes", checked="False")
-scene.append_to_caption('\n\n') #ZakichanWasHere
+scene.append_to_caption('\n\n')
 
 #Intialize the scene loop
 print("Welcome to Vector3D")
@@ -128,7 +145,7 @@ scene.bind("mousedown", vector_draw)
 scene.bind("mousemove", vector_simulate)
 
 
-
 while True:
+    cursor_checker(cursor_marker)
     draw_range = scene.range
-    rate(5)
+    rate(15)
