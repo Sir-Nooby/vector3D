@@ -11,7 +11,7 @@
 // START JAVASCRIPT
 ;(function() {;
 var ρσ_modules = {};
-var mouse, start_position;
+var mouse, start_position, user_arrow, start_from_origin, originX, originY, originZ, endX, endY, endZ, clearButton, drawnVector, mode, origin_checker;
 ρσ_modules.pythonize = {};
 
 (function(){
@@ -53,7 +53,14 @@ async function __main__() {
 
     function round(num, n=0) {return Number(num.toFixed(n))}
 
-    var version, print, arange, __name__, type, ρσ_ls, scene, distance, mode, s, x_axis, y_axis, z_axis, x_inv_axis, y_inv_axis, z_inv_axis;
+    function input(arg) {
+    	arg = arg || {}
+    	if (arg.prompt !== undefined && arg.prompt != '') return prompt(arg.prompt)
+    	else if (typeof arg === 'string') return prompt(arg)
+    	else return prompt()
+    }
+
+    var version, print, arange, __name__, type, ρσ_ls, scene, distance, mode, modes, plane_normal, plane_distance, s, x_axis, y_axis, z_axis, x_inv_axis, y_inv_axis, z_inv_axis, ρσ_unpack, originX, originY, originZ, endX, endY, endZ, start_from_origin, origin_checker, draw_range;
     version = ρσ_list_decorate([ "3.2", "glowscript" ]);
     Array.prototype['+'] = function(r) {return this.concat(r)}
     Array.prototype['*'] = function(r) {return __array_times_number(this, r)}
@@ -66,64 +73,330 @@ async function __main__() {
 
     strings();
     "6";
-    scene = ρσ_interpolate_kwargs.call(this, canvas, [ρσ_desugar_kwargs({width: 1200, height: 500, background: color.white, title: "Vector3 - A Vector Mapping Tool"})]);
+    scene = ρσ_interpolate_kwargs.call(this, canvas, [ρσ_desugar_kwargs({width: 1200, height: 500, background: color.white, resizable: false, title: "Vector3 - A Vector Mapping Tool"})]);
     "8";
     scene.ambient = color.white["*"](.8);
-    "9";
-    scene.userpan = false;
-    "11";
-    distance = 2.5;
+    "10";
+    distance = 5;
     "12";
     mode = "draw";
-    "14";
-    "15";
-    mouse = scene.mouse;
+    "13";
+    modes = ρσ_list_decorate([ "Choose a mode:", "Draw", "Vector" ]);
+    "16";
+    plane_normal = vec(0, 1, 0);
+    "17";
+    plane_distance = 0;
+    "19";
     "20";
-    s = ρσ_interpolate_kwargs.call(this, sphere, [ρσ_desugar_kwargs({radius: .05, color: color.white})]);
+    mouse = scene.mouse;
+    "22";
+    scene.up = vec(0, 0, 1);
     "23";
-    x_axis = ρσ_interpolate_kwargs.call(this, arrow, [ρσ_desugar_kwargs({pos: vec(0, 0, 0), axis: vec(distance, 0, 0), color: color.red, round: true, shaftwidth: .05})]);
+    scene.camera.pos = vec(0, 1["-u"]()["*"](distance), distance);
     "24";
-    y_axis = ρσ_interpolate_kwargs.call(this, arrow, [ρσ_desugar_kwargs({pos: vec(0, 0, 0), axis: vec(0, distance, 0), color: color.green, round: true, shaftwidth: .05})]);
-    "25";
-    z_axis = ρσ_interpolate_kwargs.call(this, arrow, [ρσ_desugar_kwargs({pos: vec(0, 0, 0), axis: vec(0, 0, distance), color: color.blue, round: true, shaftwidth: .05})]);
-    "28";
-    x_inv_axis = ρσ_interpolate_kwargs.call(this, arrow, [ρσ_desugar_kwargs({pos: vec(0, 0, 0), axis: vec(1["-u"]()["*"](distance), 0, 0), color: color.red, round: true, shaftwidth: .05})]);
+    scene.camera.axis = vec(0, distance, 1["-u"]()["*"](distance));
     "29";
-    y_inv_axis = ρσ_interpolate_kwargs.call(this, arrow, [ρσ_desugar_kwargs({pos: vec(0, 0, 0), axis: vec(0, 1["-u"]()["*"](distance), 0), color: color.green, round: true, shaftwidth: .05})]);
-    "30";
-    z_inv_axis = ρσ_interpolate_kwargs.call(this, arrow, [ρσ_desugar_kwargs({pos: vec(0, 0, 0), axis: vec(0, 0, 1["-u"]()["*"](distance)), color: color.blue, round: true, shaftwidth: .05})]);
+    s = ρσ_interpolate_kwargs.call(this, sphere, [ρσ_desugar_kwargs({radius: .05, color: color.white})]);
+    "32";
+    x_axis = ρσ_interpolate_kwargs.call(this, arrow, [ρσ_desugar_kwargs({pos: vec(0, 0, 0), axis: vec(distance, 0, 0), color: color.red, round: true, shaftwidth: .05})]);
     "33";
+    y_axis = ρσ_interpolate_kwargs.call(this, arrow, [ρσ_desugar_kwargs({pos: vec(0, 0, 0), axis: vec(0, distance, 0), color: color.green, round: true, shaftwidth: .05})]);
+    "34";
+    z_axis = ρσ_interpolate_kwargs.call(this, arrow, [ρσ_desugar_kwargs({pos: vec(0, 0, 0), axis: vec(0, 0, distance), color: color.blue, round: true, shaftwidth: .05})]);
+    "37";
+    x_inv_axis = ρσ_interpolate_kwargs.call(this, arrow, [ρσ_desugar_kwargs({pos: vec(0, 0, 0), axis: vec(1["-u"]()["*"](distance), 0, 0), color: color.red, round: true, shaftwidth: .05})]);
+    "38";
+    y_inv_axis = ρσ_interpolate_kwargs.call(this, arrow, [ρσ_desugar_kwargs({pos: vec(0, 0, 0), axis: vec(0, 1["-u"]()["*"](distance), 0), color: color.green, round: true, shaftwidth: .05})]);
+    "39";
+    z_inv_axis = ρσ_interpolate_kwargs.call(this, arrow, [ρσ_desugar_kwargs({pos: vec(0, 0, 0), axis: vec(0, 0, 1["-u"]()["*"](distance)), color: color.blue, round: true, shaftwidth: .05})]);
+    "43";
+    ρσ_unpack = [null, null, null, null, null, null, null];
+    originX = ρσ_unpack[0];
+    originY = ρσ_unpack[1];
+    originZ = ρσ_unpack[2];
+    endX = ρσ_unpack[3];
+    endY = ρσ_unpack[4];
+    endZ = ρσ_unpack[5];
+    start_from_origin = ρσ_unpack[6];
+    "46";
     async function vector_draw() {
-        "34";
-        "35";
+        "47";
+        "48";
         start_position = mouse.pos;
-        "36";
-        print(start_position);
+        "49";
+        user_arrow = ρσ_interpolate_kwargs.call(this, arrow, [ρσ_desugar_kwargs({pos: vec(start_position), axis: vec(0, 0, 0), color: color.purple, round: true, shaftwidth: .05})]);
     };
     if (!vector_draw.__module__) Object.defineProperties(vector_draw, {
         __module__ : {value: null}
     });
 
-    "39";
-    async function vector_draw_result() {
-        var ρσ_ls, final_position, t;
-        "40";
-        final_position = mouse.pos;
-        "41";
-        t = ρσ_interpolate_kwargs.call(this, arrow, [ρσ_desugar_kwargs({pos: vec(start_position), axis: vec(vec(final_position)["-"](1["*"](vec(start_position)))), color: color.purple, shaftwidth: .05})]);
+    "52";
+    async function vector_simulate() {
+        var ρσ_ls, current_positon;
+        "53";
+        current_positon = mouse.pos;
+        "54";
+        print(current_positon.x, draw_range, current_positon.y, current_positon.z);
+        "55";
+        if (current_positon) {
+            "61";
+            user_arrow.axis = current_positon["-"](1["*"](user_arrow.pos));
+        }
     };
-    if (!vector_draw_result.__module__) Object.defineProperties(vector_draw_result, {
+    if (!vector_simulate.__module__) Object.defineProperties(vector_simulate, {
         __module__ : {value: null}
     });
 
-    "44";
+    "64";
+    async function origin_switch(event) {
+        "65";
+        "66";
+        if (event.checked) {
+            "67";
+            start_from_origin = true;
+            "68";
+            if (originX !== null && originY !== null && originZ !== null && endX !== null && endY !== null && endZ !== null) {
+                "69";
+                originX.remove();
+                "70";
+                originY.remove();
+                "71";
+                originZ.remove();
+                "72";
+                endX.remove();
+                "73";
+                endY.remove();
+                "74";
+                endZ.remove();
+                "75";
+                clearButton.remove();
+            }
+            "76";
+            (await vector_create());
+            "79";
+        } else {
+            "80";
+            start_from_origin = false;
+            "81";
+            if (originX !== null && originY !== null && originZ !== null && endX !== null && endY !== null && endZ !== null) {
+                "82";
+                originX.remove();
+                "83";
+                originY.remove();
+                "84";
+                originZ.remove();
+                "85";
+                endX.remove();
+                "86";
+                endY.remove();
+                "87";
+                endZ.remove();
+                "88";
+                clearButton.remove();
+            }
+            "89";
+            (await vector_create());
+        }
+    };
+    if (!origin_switch.__argnames__) Object.defineProperties(origin_switch, {
+        __argnames__ : {value: ["event"]},
+        __module__ : {value: null}
+    });
+
+    "91";
+    async function doNothing() {
+        "92";
+    };
+    if (!doNothing.__module__) Object.defineProperties(doNothing, {
+        __module__ : {value: null}
+    });
+
+    "94";
+    async function vector_create() {
+        "95";
+        "97";
+        if (!start_from_origin) {
+            (await sleep(.1));
+            "98";
+            originX = ρσ_interpolate_kwargs.call(this, winput, [ρσ_desugar_kwargs({prompt: "Start X:", bind: doNothing, type: "numeric"})]);
+            (await sleep(.1));
+            "99";
+            originY = ρσ_interpolate_kwargs.call(this, winput, [ρσ_desugar_kwargs({prompt: "Start Y:", bind: doNothing, type: "numeric"})]);
+            (await sleep(.1));
+            "100";
+            originZ = ρσ_interpolate_kwargs.call(this, winput, [ρσ_desugar_kwargs({prompt: "Start Z:", bind: doNothing, type: "numeric"})]);
+        }
+        (await sleep(.1));
+        "101";
+        endX = ρσ_interpolate_kwargs.call(this, winput, [ρσ_desugar_kwargs({prompt: "End X:", bind: doNothing, type: "numeric"})]);
+        (await sleep(.1));
+        "102";
+        endY = ρσ_interpolate_kwargs.call(this, winput, [ρσ_desugar_kwargs({prompt: "End Y:", bind: doNothing, type: "numeric"})]);
+        (await sleep(.1));
+        "103";
+        endZ = ρσ_interpolate_kwargs.call(this, winput, [ρσ_desugar_kwargs({prompt: "End Z:", bind: doNothing, type: "numeric"})]);
+        "104";
+        clearButton = ρσ_interpolate_kwargs.call(this, button, [ρσ_desugar_kwargs({bind: vector_clear, text: "Go!"})]);
+    };
+    if (!vector_create.__module__) Object.defineProperties(vector_create, {
+        __module__ : {value: null}
+    });
+
+    "107";
+    async function vector_clear() {
+        "108";
+        "109";
+        if (!start_from_origin) {
+            "110";
+            if ((originX.text !== "" && (typeof originX.text !== "object" || ρσ_not_equals(originX.text, ""))) && (originY.text !== "" && (typeof originY.text !== "object" || ρσ_not_equals(originY.text, ""))) && (originZ.text !== "" && (typeof originZ.text !== "object" || ρσ_not_equals(originZ.text, "")))) {
+                "111";
+                drawnVector = ρσ_interpolate_kwargs.call(this, arrow, [ρσ_desugar_kwargs({pos: vec(float(originX.text), float(originY.text), float(originZ.text)), axis: vec(float(endX.text)["-"](1["*"](float(originX.text))), float(endY.text)["-"](1["*"](float(originY.text))), float(endZ.text)["-"](1["*"](float(originZ.text)))), color: color.purple, round: true, shaftwidth: .05})]);
+                "112";
+            } else {
+                "113";
+                print("Please enter 3 origin values.");
+                "114";
+            }
+        } else {
+            "115";
+            if ((endX.text !== "" && (typeof endX.text !== "object" || ρσ_not_equals(endX.text, ""))) && (endY.text !== "" && (typeof endY.text !== "object" || ρσ_not_equals(endY.text, ""))) && (endZ.text !== "" && (typeof endZ.text !== "object" || ρσ_not_equals(endZ.text, "")))) {
+                "116";
+                drawnVector = ρσ_interpolate_kwargs.call(this, arrow, [ρσ_desugar_kwargs({pos: vec(0, 0, 0), axis: vec(float(endX.text), float(endY.text), float(endZ.text)), color: color.purple, round: true, shaftwidth: .05})]);
+                "117";
+            } else {
+                "118";
+                print("Please enter 3 end values.");
+                "121";
+            }
+        }
+        if (originX !== null && originY !== null && originZ !== null && endX !== null && endY !== null && endZ !== null) {
+            "122";
+            originX.remove();
+            "123";
+            originY.remove();
+            "124";
+            originZ.remove();
+            "125";
+            endX.remove();
+            "126";
+            endY.remove();
+            "127";
+            endZ.remove();
+            "128";
+            clearButton.remove();
+        }
+        "129";
+        (await vector_create());
+    };
+    if (!vector_clear.__module__) Object.defineProperties(vector_clear, {
+        __module__ : {value: null}
+    });
+
+    "134";
+    async function mode_changer(event) {
+        "135";
+        "136";
+        scene.unbind("mousedown", vector_draw);
+        "137";
+        scene.unbind("mousemove", vector_simulate);
+        "139";
+        if ((event.index === 0 || typeof event.index === "object" && ρσ_equals(event.index, 0)) || (event.index === 1 || typeof event.index === "object" && ρσ_equals(event.index, 1))) {
+            "140";
+            mode = "draw";
+            "141";
+            scene.bind("mousedown", vector_draw);
+            "142";
+            scene.bind("mousemove", vector_simulate);
+            "143";
+            if (originX !== null && originY !== null && originZ !== null && endX !== null && endY !== null && endZ !== null) {
+                "144";
+                originX.remove();
+                "145";
+                originY.remove();
+                "146";
+                originZ.remove();
+                "147";
+                endX.remove();
+                "148";
+                endY.remove();
+                "149";
+                endZ.remove();
+                "150";
+                origin_checker.remove();
+                "151";
+                clearButton.remove();
+            }
+            "153";
+            print("Draw Mode Set!");
+            "156";
+        }
+        if ((event.index === 2 || typeof event.index === "object" && ρσ_equals(event.index, 2))) {
+            "157";
+            mode = "vector";
+            "158";
+            origin_checker = ρσ_interpolate_kwargs.call(this, checkbox, [ρσ_desugar_kwargs({bind: origin_switch, text: "Start from Origin"})]);
+            "159";
+            print("Vector Mode Set!");
+            "160";
+            (await vector_create());
+            "163";
+            scene.unbind("mousedown", vector_draw);
+            "164";
+            scene.unbind("mousemove", vector_simulate);
+        }
+    };
+    if (!mode_changer.__argnames__) Object.defineProperties(mode_changer, {
+        __argnames__ : {value: ["event"]},
+        __module__ : {value: null}
+    });
+
+    "168";
+    async function show_invertedaxes(event) {
+        "169";
+        if (event.checked) {
+            "170";
+            x_inv_axis.visible = true;
+            "171";
+            y_inv_axis.visible = true;
+            "172";
+            z_inv_axis.visible = true;
+            "173";
+        } else {
+            "174";
+            x_inv_axis.visible = false;
+            "175";
+            y_inv_axis.visible = false;
+            "176";
+            z_inv_axis.visible = false;
+        }
+    };
+    if (!show_invertedaxes.__argnames__) Object.defineProperties(show_invertedaxes, {
+        __argnames__ : {value: ["event"]},
+        __module__ : {value: null}
+    });
+
+    "179";
+    ρσ_interpolate_kwargs.call(this, menu, [ρσ_desugar_kwargs({bind: mode_changer, choices: modes, selected: "Current", index: 0})]);
+    "180";
+    ρσ_interpolate_kwargs.call(this, checkbox, [ρσ_desugar_kwargs({bind: show_invertedaxes, text: "Show inverted axes", checked: true})]);
+    "181";
+    origin_checker = ρσ_interpolate_kwargs.call(this, checkbox, [ρσ_desugar_kwargs({bind: origin_switch, text: "Start from Origin", checked: false})]);
+    "182";
+    origin_checker.remove();
+    "183";
+    scene.append_to_caption("\n\n");
+    "186";
+    print("Welcome to Vector3D");
+    "187";
     scene.bind("mousedown", vector_draw);
-    "45";
-    scene.bind("mouseup", vector_draw_result);
-    "47";
+    "188";
+    scene.bind("mousemove", vector_simulate);
+    "192";
     while (true) {
-        "48";
-        (await rate(50));
+        "193";
+        draw_range = scene.range;
+        "194";
+        (await rate(5));
     }
 };
 if (!__main__.__module__) Object.defineProperties(__main__, {
