@@ -18,6 +18,10 @@ plane_distance = 0
 global mouse
 mouse = scene.mouse
 
+scene.up = vec(0, 0, 1)
+scene.camera.pos = vec(0, -distance, distance)
+scene.camera.axis = vec(0, distance, -distance)
+
 
 #Create the 3D Scene
 
@@ -93,7 +97,6 @@ def vector_create(): #DOESNT WORK
         originX = winput(prompt='Start X:', bind=doNothing, type='numeric')
         originY = winput(prompt='Start Y:', bind=doNothing, type='numeric')
         originZ = winput(prompt='Start Z:', bind=doNothing, type='numeric')
-        scene.append_to_caption("\n")
     endX = winput(prompt='End X:', bind=doNothing, type='numeric')
     endY = winput(prompt='End Y:', bind=doNothing, type='numeric')
     endZ = winput(prompt='End Z:', bind=doNothing, type='numeric')
@@ -128,13 +131,12 @@ def vector_clear(): #DOESNT WORK
 
 #Create any userinput functions
 def mode_changer(event): #Detects any mode changes and adjusts keybindings ###SHOULD WORK
-    global mode
+    global mode, origin_checker
     scene.unbind("mousedown", vector_draw)
     scene.unbind("mousemove", vector_simulate)
 
     if event.index == 0 or event.index == 1:
         mode = "draw"
-
         scene.bind("mousedown", vector_draw)
         scene.bind("mousemove", vector_simulate)
         if originX is not None and originY is not None and originZ is not None and endX is not None and endY is not None and endZ is not None: #ZakichanWasHere
@@ -144,6 +146,7 @@ def mode_changer(event): #Detects any mode changes and adjusts keybindings ###SH
             endX.delete()
             endY.delete()
             endZ.delete()
+            origin_checker.delete()
             clearButton.delete()
 
         print("Draw Mode Set!")
@@ -151,7 +154,7 @@ def mode_changer(event): #Detects any mode changes and adjusts keybindings ###SH
 
     if event.index == 2:
         mode = "vector"
-
+        origin_checker = checkbox(bind=origin_switch, text="Start from Origin")
         print("Vector Mode Set!")
         vector_create()
         
@@ -174,7 +177,8 @@ def show_invertedaxes(event):
     
 menu(bind=mode_changer, choices=modes, selected="Current", index=0)
 checkbox(bind=show_invertedaxes, text="Show inverted axes", checked=True)
-checkbox(bind=origin_switch, text="Start from Origin", checked=False) #WORKS
+origin_checker = checkbox(bind=origin_switch, text="Start from Origin", checked=False)
+origin_checker.delete()
 scene.append_to_caption('\n\n') 
 
 #Intialize the scene loop
