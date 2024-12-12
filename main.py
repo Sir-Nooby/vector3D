@@ -22,7 +22,6 @@ scene.up = vec(0, 0, 1)
 scene.camera.pos = vec(0, -distance, distance)
 scene.camera.axis = vec(0, distance, -distance)
 
-
 #Create the 3D Scene
 
 s = sphere(radius=0.05, color=color.white)
@@ -108,7 +107,7 @@ def vector_create():
         originX = winput(prompt='Start X:', bind=doNothing, type='numeric')
         originY = winput(prompt='Start Y:', bind=doNothing, type='numeric')
         originZ = winput(prompt='Start Z:', bind=doNothing, type='numeric')
-    endX = winput(prompt='End X:', bind=doNothing, type='numeric')
+    endX = winput(prompt='\nEnd X:', bind=doNothing, type='numeric')
     endY = winput(prompt='End Y:', bind=doNothing, type='numeric')
     endZ = winput(prompt='End Z:', bind=doNothing, type='numeric')
     clearButton = button(bind=vector_clear, text='Go!')
@@ -162,7 +161,7 @@ def mode_changer(event): #Detects any mode changes and adjusts keybindings ###SH
 
     if event.index == 2:
         mode = "vector"
-        origin_checker = checkbox(bind=origin_switch, text="Start from Origin")
+        origin_checker = checkbox(bind=origin_switch, text="Start from Origin\n")
         print("Vector Mode Set!")
         vector_create()
         
@@ -183,9 +182,7 @@ def show_invertedaxes(event):
     
 menu(bind=mode_changer, choices=modes, selected="Current", index=0)
 checkbox(bind=show_invertedaxes, text="Show inverted axes", checked=True)
-origin_checker = checkbox(bind=origin_switch, text="Start from Origin", checked=False)
 box_checker = checkbox(bind=toggle_boxes, text="Show Box Guides", checked=True) #ZakichanWasHere
-origin_checker.delete()
 scene.append_to_caption('\n\n') 
 
 #Intialize the scene loop
