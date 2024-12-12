@@ -1,9 +1,9 @@
 #Vector 3D - An interactive python-based web app for mapping vectors - By SirNooby and Zakichan (Sirzak)
 from vpython import *
-from math import * #Remove this line if ran on WebVPython
+from math import * #Delete this if using Web VPython
 
 #Create scene and regulatory conditions
-scene = canvas(width=1200, height=500, background=color.white, resizable=False, title="Vector3 - A Vector Mapping Tool")
+scene = canvas(width=1200, height=500, background=color.white, resizable=False, title="Vector3 - A Vector Mapping Tool") #Chamge the height if using Web VPython (425)
 scene.ambient = color.white * 0.8
 
 global mouse
@@ -14,20 +14,20 @@ plane_normal = vec(0, 1, 0)
 plane_distance = 0      
 
 mode = "draw"
-modes = ["Choose a mode:", "Draw", "Vector"]
+modes = ["Draw", "Vector"]
 
 tick_marks = False
 user_arrow = None
 vectorX, vectorY, vectorZ = None, None, None
 originX, originY, originZ, endX, endY, endZ, start_from_origin = None, None, None, None, None, None, None
-boxes_list, show_boxes = [], True
+boxes_list, show_boxes = [], False
 
 cursor_marker = label(pos=vec(0,0,0), text="", visible=False)
 
 #Set up the inital camera
 scene.up = vec(0, 0, 1) 
-scene.camera.pos = vec(distance, distance, distance)
-scene.camera.axis = vec(-distance, -distance, -distance)
+scene.camera.pos = vec(distance+1, distance+1, distance+1)
+scene.camera.axis = vec(-distance-1, -distance-1, -distance-1)
 
 
 #Create the 3D Scene and Geometry
@@ -161,7 +161,7 @@ def mode_changer(event): #Detects any mode changes and adjusts keybindings
     scene.unbind("mousedown", vector_draw)
     scene.unbind("mousemove", vector_simulate)
 
-    if event.index == 0 or event.index == 1:
+    if event.index == 0:
         mode = "draw"
         scene.bind("mousedown", vector_draw)
         scene.bind("mousemove", vector_simulate)
@@ -169,15 +169,13 @@ def mode_changer(event): #Detects any mode changes and adjusts keybindings
             for i in [originX, originY, originZ, endX, endY, endZ, clearButton, origin_checker]:
                 i.delete()
 
-        print("Draw Mode Set!")
 
-    if event.index == 2:
+    if event.index == 1:
         mode = "vector"
-        vector_create()
         origin_checker = checkbox(bind=origin_switch, text="Start from Origin\n")
         scene.unbind("mousedown", vector_draw)
         scene.unbind("mousemove", vector_simulate)
-        print("Vector Mode Set!")
+        vector_create()
 
 
 #Show the axis planes
@@ -231,6 +229,21 @@ def cursor_checker(cursor_marker):
             cursor_marker.text = "Z-Axis!"
             cursor_marker.pos = mouse.pos
 
+        if mouse.pick == x_inv_axis:
+            cursor_marker.visible = True
+            cursor_marker.text = "-X-Axis!"
+            cursor_marker.pos = mouse.pos
+        
+        if mouse.pick == y_inv_axis:
+            cursor_marker.visible = True
+            cursor_marker.text = "-Y-Axis!"
+            cursor_marker.pos = mouse.pos
+        
+        if mouse.pick == z_inv_axis:
+            cursor_marker.visible = True
+            cursor_marker.text = "-Z-Axis!"
+            cursor_marker.pos = mouse.pos
+
         if isinstance(mouse.pick, arrow) and mouse.pick not in {x_axis, y_axis, z_axis, x_inv_axis, y_inv_axis, z_inv_axis}:
             current_object = mouse.pick
             if current_object:
@@ -248,18 +261,20 @@ def cursor_checker(cursor_marker):
 
 
 #Create UI/UX  objects
+scene.append_to_caption("Mode: ")
 menu(bind=mode_changer, choices=modes, selected="Current", index=0)
 inverted_checker = checkbox(bind=show_invertedaxes, text="Show Inverted Axes", checked=True)
 tick_checker =checkbox(bind=show_tickmarks, text="Show Tick Marks", checked=False)
 axis_checker = checkbox(bind=show_axisplanes, text="Show Axis Planes", checked=False)
-box_checker = checkbox(bind=toggle_boxes, text="Show Box Guides", checked=True)
+box_checker = checkbox(bind=toggle_boxes, text="Show Box Guides", checked=False)
 scene.append_to_caption("\n\n")
 
 #Intialize the scene loop
-print("Welcome to Vector3D")
 scene.bind("mousedown", vector_draw)
 scene.bind("mousemove", vector_simulate)
 
+
 while True:
+    cursor_checker(cursor_marker)
     draw_range = scene.range
     rate(20)
