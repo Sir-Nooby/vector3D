@@ -16,14 +16,15 @@ plane_distance = 0
 mode = "draw"
 modes = ["Choose a mode:", "Draw", "Vector"]
 
+tick_marks = False
 user_arrow = None
 vectorX, vectorY, vectorZ = None, None, None
 cursor_marker = label(pos=vec(0,0,0), text="", visible=False)
 
 #Set up the inital camera
-scene.up = vec(0, 0, 1)
-scene.camera.pos = vec(0, -distance, distance)
-scene.camera.axis = vec(0, distance, -distance)
+scene.up = vec(0, 0, 1) 
+scene.camera.pos = vec(distance, distance, distance)
+scene.camera.axis = vec(-distance, -distance, -distance)
 
 #Create the 3D Scene and Geometry
 s = sphere(radius=0.05, color=color.white)
@@ -42,6 +43,14 @@ z_inv_axis = arrow(pos=vec(0,0,0), axis=vec(0, 0, -distance), color=color.blue, 
 xy_plane = box(size=vec(distance*2, distance*2, 0.15), color=color.red, opacity=0.3, visible=False)
 xz_plane = box(size=vec(distance*2, 0.15, distance*2), color=color.blue, opacity=0.3, visible=False)
 yz_plane = box(size=vec(0.15, distance*2, distance*2), color=color.green, opacity=0.3, visible=False)
+
+tick_marksx = [label(pos=vec(i, 0, 0), text="|", height=24, box=False, opacity=0, visible=False) for i in range(1, distance)]
+tick_marksy = [label(pos=vec(0, i, 0), text="|", height=24, box=False, opacity=0, visible=False) for i in range(1, distance)]
+tick_marksz = [label(pos=vec(0, 0, i), text="―", height=24, box=False, opacity=0, visible=False) for i in range(1, distance)]
+
+tick_marksinv_x = [label(pos=vec(-i, 0, 0), text="|", height=24, box=False, opacity=0, visible=False) for i in range(1, distance)]
+tick_marksinv_y = [label(pos=vec(0, -i, 0), text="|", height=24, box=False, opacity=0, visible=False) for i in range(1, distance)]
+tick_marksinv_z = [label(pos=vec(0, 0, -i), text="―", height=24, box=False, opacity=0, visible=False) for i in range(1, distance)]
 
 
 #Define vector draw function
@@ -116,12 +125,37 @@ def mode_changer(event): #Detects any mode changes and adjusts keybindings
         scene.unbind("mousedown", vector_draw)
         scene.unbind("mousemove", vector_simulate)
 
-def show_invertedaxes(event):
-    x_inv_axis.visible = y_inv_axis.visible = z_inv_axis.visible = event.checked
+
 
 def show_axisplanes(event):
     xy_plane.visible = xz_plane.visible = yz_plane.visible = event.checked
-    
+
+
+def show_invertedaxes(event):
+    x_inv_axis.visible = y_inv_axis.visible = z_inv_axis.visible = event.checked
+
+    if event.checked and tick_marks == True:
+        for i in range(distance-1):
+            tick_marksinv_x[i].visible = tick_marksinv_y[i].visible = tick_marksinv_z[i].visible = True
+    else:
+        for i in range(distance-1):
+            tick_marksinv_x[i].visible = tick_marksinv_y[i].visible = tick_marksinv_z[i].visible = False
+
+
+def show_tickmarks(event):
+    global tick_marks
+
+    if event.checked:
+        tick_marks = True
+        for i in range(distance-1):
+            tick_marksx[i].visible = tick_marksy[i].visible = tick_marksz[i].visible = True
+            if x_inv_axis.visible == True:
+                tick_marksinv_x[i].visible = tick_marksinv_y[i].visible = tick_marksinv_z[i].visible = True
+    else:
+        tick_marks = False
+        for i in range(distance-1):
+            tick_marksx[i].visible = tick_marksy[i].visible = tick_marksz[i].visible = False
+            tick_marksinv_x[i].visible = tick_marksinv_y[i].visible = tick_marksinv_z[i].visible = False
 
 #Define the cursor scanning system
 def cursor_checker(cursor_marker):
@@ -158,9 +192,10 @@ def cursor_checker(cursor_marker):
      
 #Create user objects
 menu(bind=mode_changer, choices=modes, selected="Current", index=0)
-checkbox(bind=show_invertedaxes, text="Show Inverted Axes", checked="False")
+checkbox(bind=show_invertedaxes, text="Show Inverted Axes", checked=True)
+checkbox(bind=show_tickmarks, text="Show Tick Marks", checked=False)
 checkbox(bind=show_axisplanes, text="Show Axis Planes", checked=False)
-scene.append_to_caption('\n\n')
+scene.append_to_caption("\n\n")
 
 #Intialize the scene loop
 print("Welcome to Vector3D")
@@ -168,6 +203,7 @@ scene.bind("mousedown", vector_draw)
 scene.bind("mousemove", vector_simulate)
 
 while True:
+    #print(scene.camera.pos, scene.camera.axis)
     cursor_checker(cursor_marker)
     draw_range = scene.range
     rate(15)
