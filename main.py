@@ -19,12 +19,16 @@ modes = ["Choose a mode:", "Draw", "Vector"]
 tick_marks = False
 user_arrow = None
 vectorX, vectorY, vectorZ = None, None, None
+originX, originY, originZ, endX, endY, endZ, start_from_origin = None, None, None, None, None, None, None
+boxes_list, show_boxes = [], True
+
 cursor_marker = label(pos=vec(0,0,0), text="", visible=False)
 
 #Set up the inital camera
 scene.up = vec(0, 0, 1) 
 scene.camera.pos = vec(distance, distance, distance)
 scene.camera.axis = vec(-distance, -distance, -distance)
+
 
 #Create the 3D Scene and Geometry
 s = sphere(radius=0.05, color=color.white)
@@ -55,14 +59,18 @@ tick_marksinv_z = [label(pos=vec(0, 0, -i), text="―", height=24, box=False, op
 
 #Define vector draw function
 def vector_draw():
-    global start_position, user_arrow
+    global start_position, user_arrow, user_box
     start_position = mouse.pos
     user_arrow = arrow(pos=vec(start_position), axis=vec(0,0,0), color=color.purple, round=True, shaftwidth=0.05)
+    user_box = box(pos=user_arrow.pos + (user_arrow.axis / 2), size=user_arrow.axis, color=color.cyan, opacity=0.25, visible=True)
+    if not show_boxes:
+        user_box.visible = False
+    boxes_list.append(user_box)
+
 
 #Define vector simulating function
 def vector_simulate():
     current_positon = mouse.pos
-    print(current_positon.x, draw_range, current_positon.y, current_positon.z)
     if current_positon: #The below code is a process to detect if drawn vectors are approraching the edge of the screen
         # if abs(current_positon.x) > (draw_range * 2.25) or abs(current_positon.y * 1.1) > (draw_range) or (current_positon.z) > (draw_range * 2):
         #     user_arrow.color = color.red
@@ -70,67 +78,114 @@ def vector_simulate():
         #     user_arrow.visible = False
         # else:
             user_arrow.axis = current_positon - user_arrow.pos
+            user_box.pos = user_arrow.pos + (user_arrow.axis / 2)
+            user_box.size = user_arrow.axis
 
-#ZakichanWasHere
-def vector_create():
-    global vectorX, vectorY, vectorZ, clearButton
 
-    vectorX = winput(prompt='X:', bind=lambda: None, type='numeric')
-    vectorY = winput(prompt='Y:', bind=lambda: None, type='numeric')
-    vectorZ = winput(prompt='Z:', bind=lambda: None, type='numeric')
-    clearButton = button(bind=vector_clear, text='Go!')
-
-#ZakichanWasHere
-def vector_clear():
-    global drawnVector
-    if vectorX.text != '' and vectorY.text != '' and vectorZ.text != '':
-        drawnVector = arrow(pos=vec(0,0,0), axis=vec(float(vectorX.text), float(vectorY.text), float(vectorZ.text)), color=color.purple, round=True, shaftwidth=0.05)
-        vectorX.delete()
-        vectorY.delete()
-        vectorZ.delete()
-        clearButton.delete()
+def origin_switch(event):
+    global start_from_origin, originX, originY, originZ, endX, endY, endZ, clearButton
+    if event.checked:
+        start_from_origin = True
+        if None not in {originX, originY, originZ, endX, endY, endZ}:
+            for i in [originX, originY, originZ, endX, endY, endZ, clearButton]:
+                i.delete()
         vector_create()
     else:
-        print("Please enter a value for all vectors.")
+        start_from_origin = False
+        if None not in {originX, originY, originZ, endX, endY, endZ}:
+            for i in [originX, originY, originZ, endX, endY, endZ, clearButton]:
+                i.delete()
+        vector_create()
+
+
+def toggle_boxes(event):
+    global show_boxes
+    if event.checked:
+        show_boxes = True
+        if len(boxes_list) > 0:
+            for i in boxes_list:
+                i.visible = True
+    else:
+        show_boxes = False
+        if len(boxes_list) > 0:
+            for i in boxes_list:
+                i.visible = False
+
+
+def doNothing():
+    pass
+
+
+def vector_create():
+    global originX, originY, originZ, endX, endY, endZ, clearButton, start_from_origin
+    if not start_from_origin:
+        originX = winput(prompt='Start X:', bind=doNothing, type='numeric')
+        originY = winput(prompt='Start Y:', bind=doNothing, type='numeric')
+        originZ = winput(prompt='Start Z:', bind=doNothing, type='numeric')
+    endX = winput(prompt='\nEnd X:', bind=doNothing, type='numeric')
+    endY = winput(prompt='End Y:', bind=doNothing, type='numeric')
+    endZ = winput(prompt='End Z:', bind=doNothing, type='numeric')
+    clearButton = button(bind=vector_clear, text='Go!')
+
+
+def vector_clear():
+    global drawnVector, start_from_origin, drawnBox
+    if not start_from_origin:
+        if '' not in {originX.text, originY.text, originZ.text,}:
+            drawnVector = arrow(pos=vec(float(originX.text), float(originY.text), float(originZ.text)), axis=vec(float(endX.text) - float(originX.text), float(endY.text) - float(originY.text), float(endZ.text) - float(originZ.text)), color=color.purple, round=True, shaftwidth=0.05)
+            drawnBox = box(pos=drawnVector.pos + (drawnVector.axis / 2), size=drawnVector.axis, color=color.cyan, opacity=0.25)
+            if not show_boxes:
+                drawnBox.visible = False
+            boxes_list.append(drawnBox)
+        else:
+            print("Please enter 3 origin values.")
+    else:
+        if '' not in {endX.text, endY.text, endZ.text,}:
+            drawnVector = arrow(pos=vec(0,0,0), axis=vec(float(endX.text), float(endY.text), float(endZ.text)), color=color.purple, round=True, shaftwidth=0.05)
+            drawnBox = box(pos=drawnVector.pos + (drawnVector.axis / 2), size=drawnVector.axis, color=color.cyan, opacity=0.25)
+            if not show_boxes:
+                drawnBox.visible = False
+            boxes_list.append(drawnBox)
+        else:
+            print("Please enter 3 end values.")
+    
+    if None not in {originX, originY, originZ, endX, endY, endZ}:
+        for i in [originX, originY, originZ, endX, endY, endZ, clearButton]:
+            i.delete()
+    vector_create()
     
 
-
-#Create any userinput functions
+#Create any user input functions
 def mode_changer(event): #Detects any mode changes and adjusts keybindings
-    global mode
+    global mode, origin_checker
     scene.unbind("mousedown", vector_draw)
     scene.unbind("mousemove", vector_simulate)
 
     if event.index == 0 or event.index == 1:
         mode = "draw"
-
         scene.bind("mousedown", vector_draw)
         scene.bind("mousemove", vector_simulate)
-        if vectorX is not None and vectorY is not None and vectorZ is not None: #ZakichanWasHere
-            vectorX.delete()
-            vectorY.delete()
-            vectorZ.delete()
-            clearButton.delete()
+        if None not in {originX, originY, originZ, endX, endY, endZ}:
+            for i in [originX, originY, originZ, endX, endY, endZ, clearButton, origin_checker]:
+                i.delete()
 
         print("Draw Mode Set!")
 
-
     if event.index == 2:
         mode = "vector"
-
-        print("Vector Mode Set!")
         vector_create()
-
-
+        origin_checker = checkbox(bind=origin_switch, text="Start from Origin\n")
         scene.unbind("mousedown", vector_draw)
         scene.unbind("mousemove", vector_simulate)
+        print("Vector Mode Set!")
 
 
-
+#Show the axis planes
 def show_axisplanes(event):
     xy_plane.visible = xz_plane.visible = yz_plane.visible = event.checked
 
 
+#Create the inverted axes
 def show_invertedaxes(event):
     x_inv_axis.visible = y_inv_axis.visible = z_inv_axis.visible = event.checked
 
@@ -142,9 +197,9 @@ def show_invertedaxes(event):
             tick_marksinv_x[i].visible = tick_marksinv_y[i].visible = tick_marksinv_z[i].visible = False
 
 
+#Create the tick marks system
 def show_tickmarks(event):
     global tick_marks
-
     if event.checked:
         tick_marks = True
         for i in range(distance-1):
@@ -156,6 +211,7 @@ def show_tickmarks(event):
         for i in range(distance-1):
             tick_marksx[i].visible = tick_marksy[i].visible = tick_marksz[i].visible = False
             tick_marksinv_x[i].visible = tick_marksinv_y[i].visible = tick_marksinv_z[i].visible = False
+
 
 #Define the cursor scanning system
 def cursor_checker(cursor_marker):
@@ -189,12 +245,14 @@ def cursor_checker(cursor_marker):
                 cursor_marker.pos = mouse.pos
     else:
         cursor_marker.visible = False
-     
-#Create user objects
+
+
+#Create UI/UX  objects
 menu(bind=mode_changer, choices=modes, selected="Current", index=0)
-checkbox(bind=show_invertedaxes, text="Show Inverted Axes", checked=True)
-checkbox(bind=show_tickmarks, text="Show Tick Marks", checked=False)
-checkbox(bind=show_axisplanes, text="Show Axis Planes", checked=False)
+inverted_checker = checkbox(bind=show_invertedaxes, text="Show Inverted Axes", checked=True)
+tick_checker =checkbox(bind=show_tickmarks, text="Show Tick Marks", checked=False)
+axis_checker = checkbox(bind=show_axisplanes, text="Show Axis Planes", checked=False)
+box_checker = checkbox(bind=toggle_boxes, text="Show Box Guides", checked=True)
 scene.append_to_caption("\n\n")
 
 #Intialize the scene loop
@@ -203,7 +261,5 @@ scene.bind("mousedown", vector_draw)
 scene.bind("mousemove", vector_simulate)
 
 while True:
-    #print(scene.camera.pos, scene.camera.axis)
-    cursor_checker(cursor_marker)
     draw_range = scene.range
-    rate(15)
+    rate(20)
