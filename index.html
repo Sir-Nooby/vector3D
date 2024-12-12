@@ -11,7 +11,7 @@
 // START JAVASCRIPT
 ;(function() {;
 var ρσ_modules = {};
-var mouse, start_position, user_arrow, start_from_origin, originX, originY, originZ, endX, endY, endZ, clearButton, drawnVector, mode, origin_checker;
+var mouse, start_position, user_arrow, user_box, start_from_origin, originX, originY, originZ, endX, endY, endZ, clearButton, show_boxes, drawnVector, drawnBox, mode, origin_checker;
 ρσ_modules.pythonize = {};
 
 (function(){
@@ -60,7 +60,7 @@ async function __main__() {
     	else return prompt()
     }
 
-    var version, print, arange, __name__, type, ρσ_ls, scene, distance, mode, modes, plane_normal, plane_distance, s, x_axis, y_axis, z_axis, x_inv_axis, y_inv_axis, z_inv_axis, ρσ_unpack, originX, originY, originZ, endX, endY, endZ, start_from_origin, origin_checker, draw_range;
+    var version, print, arange, __name__, type, ρσ_ls, scene, distance, mode, modes, plane_normal, plane_distance, s, x_axis, y_axis, z_axis, x_inv_axis, y_inv_axis, z_inv_axis, ρσ_unpack, originX, originY, originZ, endX, endY, endZ, start_from_origin, boxes_list, show_boxes, origin_checker, box_checker, draw_range;
     version = ρσ_list_decorate([ "3.2", "glowscript" ]);
     Array.prototype['+'] = function(r) {return this.concat(r)}
     Array.prototype['*'] = function(r) {return __array_times_number(this, r)}
@@ -118,83 +118,105 @@ async function __main__() {
     endY = ρσ_unpack[4];
     endZ = ρσ_unpack[5];
     start_from_origin = ρσ_unpack[6];
-    "46";
+    "44";
+    ρσ_unpack = [ρσ_list_decorate([]), true];
+    boxes_list = ρσ_unpack[0];
+    show_boxes = ρσ_unpack[1];
+    "47";
     async function vector_draw() {
-        "47";
         "48";
-        start_position = mouse.pos;
         "49";
+        start_position = mouse.pos;
+        "50";
         user_arrow = ρσ_interpolate_kwargs.call(this, arrow, [ρσ_desugar_kwargs({pos: vec(start_position), axis: vec(0, 0, 0), color: color.purple, round: true, shaftwidth: .05})]);
+        "51";
+        user_box = ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: user_arrow.pos["+"](user_arrow.axis["/"](2)), size: user_arrow.axis, color: color.cyan, opacity: .25, visible: true})]);
+        "52";
+        if (!show_boxes) {
+            "53";
+            user_box.visible = false;
+        }
+        "54";
+        boxes_list.append(user_box);
     };
     if (!vector_draw.__module__) Object.defineProperties(vector_draw, {
         __module__ : {value: null}
     });
 
-    "52";
+    "57";
     async function vector_simulate() {
-        var ρσ_ls, current_positon;
-        "53";
-        current_positon = mouse.pos;
-        "54";
-        print(current_positon.x, draw_range, current_positon.y, current_positon.z);
-        "55";
-        if (current_positon) {
-            "61";
-            user_arrow.axis = current_positon["-"](1["*"](user_arrow.pos));
+        var ρσ_ls, current_position;
+        "58";
+        current_position = mouse.pos;
+        "60";
+        if (current_position) {
+            "66";
+            user_arrow.axis = current_position["-"](1["*"](user_arrow.pos));
+            "67";
+            user_box.pos = user_arrow.pos["+"](user_arrow.axis["/"](2));
+            "68";
+            user_box.size = user_arrow.axis;
         }
     };
     if (!vector_simulate.__module__) Object.defineProperties(vector_simulate, {
         __module__ : {value: null}
     });
 
-    "64";
+    "71";
     async function origin_switch(event) {
-        "65";
-        "66";
+        var ρσ_ls, i;
+        "72";
+        "73";
         if (event.checked) {
-            "67";
+            "74";
             start_from_origin = true;
-            "68";
-            if (originX !== null && originY !== null && originZ !== null && endX !== null && endY !== null && endZ !== null) {
-                "69";
-                originX.remove();
-                "70";
-                originY.remove();
-                "71";
-                originZ.remove();
-                "72";
-                endX.remove();
-                "73";
-                endY.remove();
-                "74";
-                endZ.remove();
-                "75";
-                clearButton.remove();
+            "75";
+            if (!ρσ_in(null, (function(){
+                var s = ρσ_set();
+                s.jsset.add(originX);
+                s.jsset.add(originY);
+                s.jsset.add(originZ);
+                s.jsset.add(endX);
+                s.jsset.add(endY);
+                s.jsset.add(endZ);
+                return s;
+            })())) {
+                "76";
+                var ρσ_Iter1 = ρσ_list_decorate([ originX, originY, originZ, endX, endY, endZ, clearButton ]);
+                ρσ_Iter1 = ((typeof ρσ_Iter1[Symbol.iterator] === "function") ? (ρσ_Iter1 instanceof Map ? ρσ_Iter1.keys() : ρσ_Iter1) : Object.keys(ρσ_Iter1));
+                for (var ρσ_Index1 of ρσ_Iter1) {
+                    i = ρσ_Index1;
+                    "77";
+                    i.remove();
+                }
             }
-            "76";
+            "78";
             (await vector_create());
-            "79";
-        } else {
-            "80";
-            start_from_origin = false;
             "81";
-            if (originX !== null && originY !== null && originZ !== null && endX !== null && endY !== null && endZ !== null) {
-                "82";
-                originX.remove();
-                "83";
-                originY.remove();
+        } else {
+            "82";
+            start_from_origin = false;
+            "83";
+            if (!ρσ_in(null, (function(){
+                var s = ρσ_set();
+                s.jsset.add(originX);
+                s.jsset.add(originY);
+                s.jsset.add(originZ);
+                s.jsset.add(endX);
+                s.jsset.add(endY);
+                s.jsset.add(endZ);
+                return s;
+            })())) {
                 "84";
-                originZ.remove();
-                "85";
-                endX.remove();
-                "86";
-                endY.remove();
-                "87";
-                endZ.remove();
-                "88";
-                clearButton.remove();
+                var ρσ_Iter2 = ρσ_list_decorate([ originX, originY, originZ, endX, endY, endZ, clearButton ]);
+                ρσ_Iter2 = ((typeof ρσ_Iter2[Symbol.iterator] === "function") ? (ρσ_Iter2 instanceof Map ? ρσ_Iter2.keys() : ρσ_Iter2) : Object.keys(ρσ_Iter2));
+                for (var ρσ_Index2 of ρσ_Iter2) {
+                    i = ρσ_Index2;
+                    "85";
+                    i.remove();
+                }
             }
-            "89";
+            "86";
             (await vector_create());
         }
     };
@@ -203,145 +225,222 @@ async function __main__() {
         __module__ : {value: null}
     });
 
-    "91";
+    "89";
+    async function toggle_boxes(event) {
+        var ρσ_ls, i;
+        "90";
+        "91";
+        if (event.checked) {
+            "92";
+            show_boxes = true;
+            "93";
+            if (len(boxes_list)[">"](0)) {
+                "94";
+                var ρσ_Iter3 = boxes_list;
+                ρσ_Iter3 = ((typeof ρσ_Iter3[Symbol.iterator] === "function") ? (ρσ_Iter3 instanceof Map ? ρσ_Iter3.keys() : ρσ_Iter3) : Object.keys(ρσ_Iter3));
+                for (var ρσ_Index3 of ρσ_Iter3) {
+                    i = ρσ_Index3;
+                    "95";
+                    i.visible = true;
+                    "96";
+                }
+            }
+        } else {
+            "97";
+            show_boxes = false;
+            "98";
+            if (len(boxes_list)[">"](0)) {
+                "99";
+                var ρσ_Iter4 = boxes_list;
+                ρσ_Iter4 = ((typeof ρσ_Iter4[Symbol.iterator] === "function") ? (ρσ_Iter4 instanceof Map ? ρσ_Iter4.keys() : ρσ_Iter4) : Object.keys(ρσ_Iter4));
+                for (var ρσ_Index4 of ρσ_Iter4) {
+                    i = ρσ_Index4;
+                    "100";
+                    i.visible = false;
+                }
+            }
+        }
+    };
+    if (!toggle_boxes.__argnames__) Object.defineProperties(toggle_boxes, {
+        __argnames__ : {value: ["event"]},
+        __module__ : {value: null}
+    });
+
+    "102";
     async function doNothing() {
-        "92";
+        "103";
     };
     if (!doNothing.__module__) Object.defineProperties(doNothing, {
         __module__ : {value: null}
     });
 
-    "94";
+    "105";
     async function vector_create() {
-        "95";
-        "97";
+        "106";
+        "108";
         if (!start_from_origin) {
             (await sleep(.1));
-            "98";
+            "109";
             originX = ρσ_interpolate_kwargs.call(this, winput, [ρσ_desugar_kwargs({prompt: "Start X:", bind: doNothing, type: "numeric"})]);
             (await sleep(.1));
-            "99";
+            "110";
             originY = ρσ_interpolate_kwargs.call(this, winput, [ρσ_desugar_kwargs({prompt: "Start Y:", bind: doNothing, type: "numeric"})]);
             (await sleep(.1));
-            "100";
+            "111";
             originZ = ρσ_interpolate_kwargs.call(this, winput, [ρσ_desugar_kwargs({prompt: "Start Z:", bind: doNothing, type: "numeric"})]);
         }
         (await sleep(.1));
-        "101";
+        "112";
         endX = ρσ_interpolate_kwargs.call(this, winput, [ρσ_desugar_kwargs({prompt: "End X:", bind: doNothing, type: "numeric"})]);
         (await sleep(.1));
-        "102";
+        "113";
         endY = ρσ_interpolate_kwargs.call(this, winput, [ρσ_desugar_kwargs({prompt: "End Y:", bind: doNothing, type: "numeric"})]);
         (await sleep(.1));
-        "103";
+        "114";
         endZ = ρσ_interpolate_kwargs.call(this, winput, [ρσ_desugar_kwargs({prompt: "End Z:", bind: doNothing, type: "numeric"})]);
-        "104";
+        "115";
         clearButton = ρσ_interpolate_kwargs.call(this, button, [ρσ_desugar_kwargs({bind: vector_clear, text: "Go!"})]);
     };
     if (!vector_create.__module__) Object.defineProperties(vector_create, {
         __module__ : {value: null}
     });
 
-    "107";
+    "118";
     async function vector_clear() {
-        "108";
-        "109";
+        var ρσ_ls, i;
+        "119";
+        "120";
         if (!start_from_origin) {
-            "110";
-            if ((originX.text !== "" && (typeof originX.text !== "object" || ρσ_not_equals(originX.text, ""))) && (originY.text !== "" && (typeof originY.text !== "object" || ρσ_not_equals(originY.text, ""))) && (originZ.text !== "" && (typeof originZ.text !== "object" || ρσ_not_equals(originZ.text, "")))) {
-                "111";
+            "121";
+            if (!ρσ_in("", (function(){
+                var s = ρσ_set();
+                s.jsset.add(originX.text);
+                s.jsset.add(originY.text);
+                s.jsset.add(originZ.text);
+                return s;
+            })())) {
+                "122";
                 drawnVector = ρσ_interpolate_kwargs.call(this, arrow, [ρσ_desugar_kwargs({pos: vec(float(originX.text), float(originY.text), float(originZ.text)), axis: vec(float(endX.text)["-"](1["*"](float(originX.text))), float(endY.text)["-"](1["*"](float(originY.text))), float(endZ.text)["-"](1["*"](float(originZ.text)))), color: color.purple, round: true, shaftwidth: .05})]);
-                "112";
+                "123";
+                drawnBox = ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: drawnVector.pos["+"](drawnVector.axis["/"](2)), size: drawnVector.axis, color: color.cyan, opacity: .25})]);
+                "124";
+                if (!show_boxes) {
+                    "125";
+                    drawnBox.visible = false;
+                }
+                "126";
+                boxes_list.append(drawnBox);
+                "127";
             } else {
-                "113";
+                "128";
                 print("Please enter 3 origin values.");
-                "114";
+                "129";
             }
         } else {
-            "115";
-            if ((endX.text !== "" && (typeof endX.text !== "object" || ρσ_not_equals(endX.text, ""))) && (endY.text !== "" && (typeof endY.text !== "object" || ρσ_not_equals(endY.text, ""))) && (endZ.text !== "" && (typeof endZ.text !== "object" || ρσ_not_equals(endZ.text, "")))) {
-                "116";
+            "130";
+            if (!ρσ_in("", (function(){
+                var s = ρσ_set();
+                s.jsset.add(endX.text);
+                s.jsset.add(endY.text);
+                s.jsset.add(endZ.text);
+                return s;
+            })())) {
+                "131";
                 drawnVector = ρσ_interpolate_kwargs.call(this, arrow, [ρσ_desugar_kwargs({pos: vec(0, 0, 0), axis: vec(float(endX.text), float(endY.text), float(endZ.text)), color: color.purple, round: true, shaftwidth: .05})]);
-                "117";
+                "132";
+                drawnBox = ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: drawnVector.pos["+"](drawnVector.axis["/"](2)), size: drawnVector.axis, color: color.cyan, opacity: .25})]);
+                "133";
+                if (!show_boxes) {
+                    "134";
+                    drawnBox.visible = false;
+                }
+                "135";
+                boxes_list.append(drawnBox);
+                "136";
             } else {
-                "118";
+                "137";
                 print("Please enter 3 end values.");
-                "121";
+                "140";
             }
         }
-        if (originX !== null && originY !== null && originZ !== null && endX !== null && endY !== null && endZ !== null) {
-            "122";
-            originX.remove();
-            "123";
-            originY.remove();
-            "124";
-            originZ.remove();
-            "125";
-            endX.remove();
-            "126";
-            endY.remove();
-            "127";
-            endZ.remove();
-            "128";
-            clearButton.remove();
+        if (!ρσ_in(null, (function(){
+            var s = ρσ_set();
+            s.jsset.add(originX);
+            s.jsset.add(originY);
+            s.jsset.add(originZ);
+            s.jsset.add(endX);
+            s.jsset.add(endY);
+            s.jsset.add(endZ);
+            return s;
+        })())) {
+            "141";
+            var ρσ_Iter5 = ρσ_list_decorate([ originX, originY, originZ, endX, endY, endZ, clearButton ]);
+            ρσ_Iter5 = ((typeof ρσ_Iter5[Symbol.iterator] === "function") ? (ρσ_Iter5 instanceof Map ? ρσ_Iter5.keys() : ρσ_Iter5) : Object.keys(ρσ_Iter5));
+            for (var ρσ_Index5 of ρσ_Iter5) {
+                i = ρσ_Index5;
+                "142";
+                i.remove();
+            }
         }
-        "129";
+        "143";
         (await vector_create());
     };
     if (!vector_clear.__module__) Object.defineProperties(vector_clear, {
         __module__ : {value: null}
     });
 
-    "134";
+    "148";
     async function mode_changer(event) {
-        "135";
-        "136";
+        var ρσ_ls, i;
+        "149";
+        "150";
         scene.unbind("mousedown", vector_draw);
-        "137";
+        "151";
         scene.unbind("mousemove", vector_simulate);
-        "139";
+        "153";
         if ((event.index === 0 || typeof event.index === "object" && ρσ_equals(event.index, 0)) || (event.index === 1 || typeof event.index === "object" && ρσ_equals(event.index, 1))) {
-            "140";
+            "154";
             mode = "draw";
-            "141";
+            "155";
             scene.bind("mousedown", vector_draw);
-            "142";
-            scene.bind("mousemove", vector_simulate);
-            "143";
-            if (originX !== null && originY !== null && originZ !== null && endX !== null && endY !== null && endZ !== null) {
-                "144";
-                originX.remove();
-                "145";
-                originY.remove();
-                "146";
-                originZ.remove();
-                "147";
-                endX.remove();
-                "148";
-                endY.remove();
-                "149";
-                endZ.remove();
-                "150";
-                origin_checker.remove();
-                "151";
-                clearButton.remove();
-            }
-            "153";
-            print("Draw Mode Set!");
             "156";
+            scene.bind("mousemove", vector_simulate);
+            "157";
+            if (!ρσ_in(null, (function(){
+                var s = ρσ_set();
+                s.jsset.add(originX);
+                s.jsset.add(originY);
+                s.jsset.add(originZ);
+                s.jsset.add(endX);
+                s.jsset.add(endY);
+                s.jsset.add(endZ);
+                return s;
+            })())) {
+                "158";
+                var ρσ_Iter6 = ρσ_list_decorate([ originX, originY, originZ, endX, endY, endZ, clearButton, origin_checker ]);
+                ρσ_Iter6 = ((typeof ρσ_Iter6[Symbol.iterator] === "function") ? (ρσ_Iter6 instanceof Map ? ρσ_Iter6.keys() : ρσ_Iter6) : Object.keys(ρσ_Iter6));
+                for (var ρσ_Index6 of ρσ_Iter6) {
+                    i = ρσ_Index6;
+                    "159";
+                    i.remove();
+                }
+            }
+            "161";
+            print("Draw Mode Set!");
+            "164";
         }
         if ((event.index === 2 || typeof event.index === "object" && ρσ_equals(event.index, 2))) {
-            "157";
+            "165";
             mode = "vector";
-            "158";
+            "166";
             origin_checker = ρσ_interpolate_kwargs.call(this, checkbox, [ρσ_desugar_kwargs({bind: origin_switch, text: "Start from Origin"})]);
-            "159";
+            "167";
             print("Vector Mode Set!");
-            "160";
+            "168";
             (await vector_create());
-            "163";
+            "171";
             scene.unbind("mousedown", vector_draw);
-            "164";
+            "172";
             scene.unbind("mousemove", vector_simulate);
         }
     };
@@ -350,24 +449,16 @@ async function __main__() {
         __module__ : {value: null}
     });
 
-    "168";
+    "176";
     async function show_invertedaxes(event) {
-        "169";
+        "177";
         if (event.checked) {
-            "170";
-            x_inv_axis.visible = true;
-            "171";
-            y_inv_axis.visible = true;
-            "172";
-            z_inv_axis.visible = true;
-            "173";
+            "178";
+            x_inv_axis.visible = y_inv_axis.visible = z_inv_axis.visible = true;
+            "179";
         } else {
-            "174";
-            x_inv_axis.visible = false;
-            "175";
-            y_inv_axis.visible = false;
-            "176";
-            z_inv_axis.visible = false;
+            "180";
+            x_inv_axis.visible = y_inv_axis.visible = z_inv_axis.visible = false;
         }
     };
     if (!show_invertedaxes.__argnames__) Object.defineProperties(show_invertedaxes, {
@@ -375,27 +466,29 @@ async function __main__() {
         __module__ : {value: null}
     });
 
-    "179";
+    "185";
     ρσ_interpolate_kwargs.call(this, menu, [ρσ_desugar_kwargs({bind: mode_changer, choices: modes, selected: "Current", index: 0})]);
-    "180";
-    ρσ_interpolate_kwargs.call(this, checkbox, [ρσ_desugar_kwargs({bind: show_invertedaxes, text: "Show inverted axes", checked: true})]);
-    "181";
-    origin_checker = ρσ_interpolate_kwargs.call(this, checkbox, [ρσ_desugar_kwargs({bind: origin_switch, text: "Start from Origin", checked: false})]);
-    "182";
-    origin_checker.remove();
-    "183";
-    scene.append_to_caption("\n\n");
     "186";
-    print("Welcome to Vector3D");
+    ρσ_interpolate_kwargs.call(this, checkbox, [ρσ_desugar_kwargs({bind: show_invertedaxes, text: "Show inverted axes", checked: true})]);
     "187";
-    scene.bind("mousedown", vector_draw);
+    origin_checker = ρσ_interpolate_kwargs.call(this, checkbox, [ρσ_desugar_kwargs({bind: origin_switch, text: "Start from Origin", checked: false})]);
     "188";
+    box_checker = ρσ_interpolate_kwargs.call(this, checkbox, [ρσ_desugar_kwargs({bind: toggle_boxes, text: "Show Box Guides", checked: true})]);
+    "189";
+    origin_checker.remove();
+    "190";
+    scene.append_to_caption("\n\n");
+    "193";
+    print("Welcome to Vector3D");
+    "194";
+    scene.bind("mousedown", vector_draw);
+    "195";
     scene.bind("mousemove", vector_simulate);
-    "192";
+    "199";
     while (true) {
-        "193";
+        "200";
         draw_range = scene.range;
-        "194";
+        "201";
         (await rate(5));
     }
 };
