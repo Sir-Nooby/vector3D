@@ -1,5 +1,6 @@
 #Vector 3D - An interactive python-based web app for mapping vectors
 from vpython import *
+from math import *
 
 #Create scene and regulatory conditions
 scene = canvas(width=1200, height=500, background=color.white, resizable=False, title="Vector3 - A Vector Mapping Tool")
@@ -18,7 +19,6 @@ modes = ["Choose a mode:", "Draw", "Vector"]
 user_arrow = None
 vectorX, vectorY, vectorZ = None, None, None
 cursor_marker = label(pos=vec(0,0,0), text="", visible=False)
-
 
 scene.up = vec(0, 0, 1)
 scene.camera.pos = vec(0, -distance, distance)
@@ -124,18 +124,35 @@ def show_invertedaxes(event):
 
 
 #Define the cursor scanning system
-def cursor_checker(cursor_marker): #SirNooby yo imma code this yo
-    
+def cursor_checker(cursor_marker):
     if mouse.pick:
         if mouse.pick == x_axis:
             cursor_marker.visible = True
-            cursor_marker.text = "This is the X-Axis!"
+            cursor_marker.text = "X-Axis!"
             cursor_marker.pos = mouse.pos
 
-        if user_arrow and mouse.pick == user_arrow:
+        if mouse.pick == y_axis:
             cursor_marker.visible = True
-            cursor_marker.text = "This is a user-made vector! The Magnitude is " + str(round(user_arrow.axis.mag, 3))
+            cursor_marker.text = "Y-Axis!"
             cursor_marker.pos = mouse.pos
+        
+        if mouse.pick == z_axis:
+            cursor_marker.visible = True
+            cursor_marker.text = "Z-Axis!"
+            cursor_marker.pos = mouse.pos
+
+        if isinstance(mouse.pick, arrow) and mouse.pick != x_axis and mouse.pick != y_axis and mouse.pick != z_axis:
+            current_object = mouse.pick
+            if current_object:
+                local_magnitude = current_object.axis.mag
+                local_start = round(current_object.pos.x, 2), round(current_object.pos.y, 2), round(current_object.pos.z, 2),
+                local_end = round(current_object.axis.x, 2), round(current_object.axis.x, 2), round(current_object.axis.x, 2)
+                local_alpha = round(degrees(acos(float(current_object.axis.x)/float(local_magnitude))), 2)
+                local_beta = round(degrees(acos(float(current_object.axis.y)/float(local_magnitude))), 2)
+                local_gamma = round(degrees(acos(float(current_object.axis.z)/float(local_magnitude))), 2)
+                cursor_marker.text = "Generated Vector\nMagnitude: " + str(round(local_magnitude, 3)) + "\nFrom " + str(local_start) + "\nTo " + str(local_end) + "\nα=" + str(local_alpha) + "\nß=" + str(local_beta) + "\nΓ=" + str(local_gamma)
+                cursor_marker.visible = True
+                cursor_marker.pos = mouse.pos
     else:
         cursor_marker.visible = False
      
