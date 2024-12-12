@@ -103,15 +103,17 @@ def vector_create(): #DOESNT WORK
 
 #ZakichanWasHere
 def vector_clear(): #DOESNT WORK
-    global drawnVector, start_from_origin
+    global drawnVector, start_from_origin, drawnBox
     if not start_from_origin:
         if originX.text != '' and originY.text != '' and originZ.text != '':
             drawnVector = arrow(pos=vec(float(originX.text), float(originY.text), float(originZ.text)), axis=vec(float(endX.text) - float(originX.text), float(endY.text) - float(originY.text), float(endZ.text) - float(originZ.text)), color=color.purple, round=True, shaftwidth=0.05)
+            drawnBox = box(pos=drawnVector.pos + (drawnVector.axis / 2), size=vec(float(endX.text) - float(originX.text), float(endY.text) - float(originY.text), float(endZ.text) - float(originZ.text)), color=color.cyan, opacity=0.25)
         else:
             print("Please enter 3 origin values.")
     else:
         if endX.text != '' and endY.text != '' and endZ.text != '':
             drawnVector = arrow(pos=vec(0,0,0), axis=vec(float(endX.text), float(endY.text), float(endZ.text)), color=color.purple, round=True, shaftwidth=0.05)
+            drawnBox = box(pos=drawnVector.pos + (drawnVector.axis / 2), size=vec(float(endX.text), float(endY.text), float(endZ.text)), color=color.cyan, opacity=0.25)
         else:
             print("Please enter 3 end values.")
 
