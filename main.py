@@ -1,6 +1,6 @@
 #Vector 3D - An interactive python-based web app for mapping vectors - By SirNooby and Zakichan (Sirzak)
 from vpython import *
-from math import *
+from math import * #Remove this line if ran on WebVPython
 
 #Create scene and regulatory conditions
 scene = canvas(width=1200, height=500, background=color.white, resizable=False, title="Vector3 - A Vector Mapping Tool")
@@ -235,7 +235,7 @@ def cursor_checker(cursor_marker):
             current_object = mouse.pick
             if current_object:
                 local_magnitude = current_object.axis.mag
-                local_start = round(current_object.pos.x, 2), round(current_object.pos.y, 2), round(current_object.pos.z, 2),
+                local_start = round(current_object.pos.x, 2), round(current_object.pos.y, 2), round(current_object.pos.z, 2)
                 local_end = round(current_object.axis.x, 2), round(current_object.axis.x, 2), round(current_object.axis.x, 2)
                 local_alpha = round(degrees(acos(float(current_object.axis.x)/float(local_magnitude))), 2)
                 local_beta = round(degrees(acos(float(current_object.axis.y)/float(local_magnitude))), 2)
