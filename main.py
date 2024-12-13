@@ -3,7 +3,7 @@ from vpython import *
 from math import * #Delete this if using Web VPython
 
 #Create scene and regulatory conditions
-scene = canvas(width=1200, height=500, background=color.white, resizable=False, title="Vector3 - A Vector Mapping Tool") #Chamge the height if using Web VPython (425)
+scene = canvas(width=1200, height=425, background=color.white, resizable=True, title="Vector3D - A Vector Mapping Tool (V1.0)                        Created by <a href='https://github.com/Sir-Nooby' target='_blank'>SirNooby</a> and <a href='https://github.com/ZakichanMC' target='_blank'>Zakichan</a>                                   Need Help? <a href='https://github.com/Sir-Nooby/vector3' target='_blank'> Read the Vector3D Documentation</a>") #Chamge the height if using Web VPython (475)
 scene.ambient = color.white * 0.8
 
 global mouse
@@ -263,10 +263,11 @@ def cursor_checker(cursor_marker):
 #Create UI/UX  objects
 scene.append_to_caption("Mode: ")
 menu(bind=mode_changer, choices=modes, selected="Current", index=0)
-inverted_checker = checkbox(bind=show_invertedaxes, text="Show Inverted Axes", checked=True)
-tick_checker =checkbox(bind=show_tickmarks, text="Show Tick Marks", checked=False)
-axis_checker = checkbox(bind=show_axisplanes, text="Show Axis Planes", checked=False)
-box_checker = checkbox(bind=toggle_boxes, text="Show Box Guides", checked=False)
+scene.append_to_caption("   ") #Filler Line, adding two whitespace for spacing
+inverted_checker = checkbox(bind=show_invertedaxes, text="Show Inverted Axes  ", checked=True)
+tick_checker =checkbox(bind=show_tickmarks, text="Show Tick Marks   ", checked=False)
+axis_checker = checkbox(bind=show_axisplanes, text="Show Axis Planes  ", checked=False)
+box_checker = checkbox(bind=toggle_boxes, text="Show Box Guides  ", checked=False)
 scene.append_to_caption("\n\n")
 
 #Intialize the scene loop
