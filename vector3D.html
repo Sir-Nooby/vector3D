@@ -1,0 +1,750 @@
+<div id="glowscript" class="glowscript">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link type="text/css" href="https://www.glowscript.org/css/redmond/2.1/jquery-ui.custom.css" rel="stylesheet" />
+<link type="text/css" href="https://www.glowscript.org/css/ide.css" rel="stylesheet" />
+<script type="text/javascript" src="https://www.glowscript.org/lib/jquery/2.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://www.glowscript.org/lib/jquery/2.1/jquery-ui.custom.min.js"></script>
+<script type="text/javascript" src="https://www.glowscript.org/package/glow.3.2.min.js"></script>
+<script type="text/javascript" src="https://www.glowscript.org/package/RSrun.3.2.min.js"></script>
+<script type="text/javascript"><!--//--><![CDATA[//><!--
+
+// START JAVASCRIPT
+;(function() {;
+var ρσ_modules = {};
+var mouse, start_position, user_arrow, user_box, start_from_origin, originX, originY, originZ, endX, endY, endZ, clearButton, show_boxes, drawnVector, drawnBox, mode, origin_checker, tick_marks;
+ρσ_modules.pythonize = {};
+
+(function(){
+    function strings() {
+        var string_funcs, exclude, name;
+        string_funcs = set("capitalize strip lstrip rstrip islower isupper isspace lower upper swapcase center count endswith startswith find rfind index rindex format join ljust rjust partition rpartition replace split rsplit splitlines zfill".split(" "));
+        if (!arguments.length) {
+            exclude = (function(){
+                var s = ρσ_set();
+                s.jsset.add("split");
+                s.jsset.add("replace");
+                return s;
+            })();
+        } else if (arguments[0]) {
+            exclude = Array.prototype.slice.call(arguments);
+        } else {
+            exclude = null;
+        }
+        if (exclude) {
+            string_funcs = string_funcs.difference(set(exclude));
+        }
+        var ρσ_Iter0 = string_funcs;
+        ρσ_Iter0 = ((typeof ρσ_Iter0[Symbol.iterator] === "function") ? (ρσ_Iter0 instanceof Map ? ρσ_Iter0.keys() : ρσ_Iter0) : Object.keys(ρσ_Iter0));
+        for (var ρσ_Index0 of ρσ_Iter0) {
+            name = ρσ_Index0;
+            (ρσ_expr_temp = String.prototype)[(typeof name === "number" && name < 0) ? ρσ_expr_temp.length + name : name] = (ρσ_expr_temp = ρσ_str.prototype)[(typeof name === "number" && name < 0) ? ρσ_expr_temp.length + name : name];
+        }
+    };
+    if (!strings.__module__) Object.defineProperties(strings, {
+        __module__ : {value: "pythonize"}
+    });
+
+    ρσ_modules.pythonize.strings = strings;
+})();
+async function __main__() {
+"use strict";
+    var display = canvas;
+    var scene = canvas();
+
+    function round(num, n=0) {return Number(num.toFixed(n))}
+
+    function input(arg) {
+    	arg = arg || {}
+    	if (arg.prompt !== undefined && arg.prompt != '') return prompt(arg.prompt)
+    	else if (typeof arg === 'string') return prompt(arg)
+    	else return prompt()
+    }
+
+    var version, print, arange, __name__, type, ρσ_ls, scene, distance, plane_normal, plane_distance, mode, modes, tick_marks, user_arrow, ρσ_unpack, vectorX, vectorY, vectorZ, originX, originY, originZ, endX, endY, endZ, start_from_origin, boxes_list, show_boxes, cursor_marker, s, x_axis, y_axis, z_axis, x_inv_axis, y_inv_axis, z_inv_axis, xy_plane, xz_plane, yz_plane, tick_marksx, i, tick_marksy, tick_marksz, tick_marksinv_x, tick_marksinv_y, tick_marksinv_z, inverted_checker, tick_checker, axis_checker, box_checker, draw_range;
+    version = ρσ_list_decorate([ "3.2", "glowscript" ]);
+    Array.prototype['+'] = function(r) {return this.concat(r)}
+    Array.prototype['*'] = function(r) {return __array_times_number(this, r)}
+    window.__GSlang = "vpython";
+    print = GSprint;
+    arange = range;
+    __name__ = "__main__";
+    type = pytype;
+    var strings = ρσ_modules.pythonize.strings;
+
+    strings();
+    "6";
+    scene = ρσ_interpolate_kwargs.call(this, canvas, [ρσ_desugar_kwargs({width: 1200, height: 425, background: color.white, resizable: true, title: "Vector3D - A Vector Mapping Tool (V1.0)                        Created by <a href='https://github.com/Sir-Nooby' target='_blank'>SirNooby<\/a> and <a href='https://github.com/ZakichanMC' target='_blank'>Zakichan</a>                                   Need Help? <a href='https://github.com/Sir-Nooby/vector3' target='_blank'> Read the Vector3D Documentation</a>"})]);
+    "7";
+    scene.ambient = color.white["*"](.8);
+    "9";
+    "10";
+    mouse = scene.mouse;
+    "11";
+    distance = 5;
+    "13";
+    plane_normal = vec(0, 1, 0);
+    "14";
+    plane_distance = 0;
+    "16";
+    mode = "draw";
+    "17";
+    modes = ρσ_list_decorate([ "Draw", "Vector" ]);
+    "19";
+    tick_marks = false;
+    "20";
+    user_arrow = null;
+    "21";
+    ρσ_unpack = [null, null, null];
+    vectorX = ρσ_unpack[0];
+    vectorY = ρσ_unpack[1];
+    vectorZ = ρσ_unpack[2];
+    "22";
+    ρσ_unpack = [null, null, null, null, null, null, null];
+    originX = ρσ_unpack[0];
+    originY = ρσ_unpack[1];
+    originZ = ρσ_unpack[2];
+    endX = ρσ_unpack[3];
+    endY = ρσ_unpack[4];
+    endZ = ρσ_unpack[5];
+    start_from_origin = ρσ_unpack[6];
+    "23";
+    ρσ_unpack = [ρσ_list_decorate([]), false];
+    boxes_list = ρσ_unpack[0];
+    show_boxes = ρσ_unpack[1];
+    "25";
+    cursor_marker = ρσ_interpolate_kwargs.call(this, label, [ρσ_desugar_kwargs({pos: vec(0, 0, 0), text: "", visible: false})]);
+    "28";
+    scene.up = vec(0, 0, 1);
+    "29";
+    scene.camera.pos = vec(distance["+"](1), distance["+"](1), distance["+"](1));
+    "30";
+    scene.camera.axis = vec(1["-u"]()["*"](distance)["-"](1), 1["-u"]()["*"](distance)["-"](1), 1["-u"]()["*"](distance)["-"](1));
+    "34";
+    s = ρσ_interpolate_kwargs.call(this, sphere, [ρσ_desugar_kwargs({radius: .05, color: color.white})]);
+    "37";
+    x_axis = ρσ_interpolate_kwargs.call(this, arrow, [ρσ_desugar_kwargs({pos: vec(0, 0, 0), axis: vec(distance, 0, 0), color: color.red, round: true, shaftwidth: .05})]);
+    "38";
+    y_axis = ρσ_interpolate_kwargs.call(this, arrow, [ρσ_desugar_kwargs({pos: vec(0, 0, 0), axis: vec(0, distance, 0), color: color.green, round: true, shaftwidth: .05})]);
+    "39";
+    z_axis = ρσ_interpolate_kwargs.call(this, arrow, [ρσ_desugar_kwargs({pos: vec(0, 0, 0), axis: vec(0, 0, distance), color: color.blue, round: true, shaftwidth: .05})]);
+    "42";
+    x_inv_axis = ρσ_interpolate_kwargs.call(this, arrow, [ρσ_desugar_kwargs({pos: vec(0, 0, 0), axis: vec(1["-u"]()["*"](distance), 0, 0), color: color.red, round: true, shaftwidth: .05})]);
+    "43";
+    y_inv_axis = ρσ_interpolate_kwargs.call(this, arrow, [ρσ_desugar_kwargs({pos: vec(0, 0, 0), axis: vec(0, 1["-u"]()["*"](distance), 0), color: color.green, round: true, shaftwidth: .05})]);
+    "44";
+    z_inv_axis = ρσ_interpolate_kwargs.call(this, arrow, [ρσ_desugar_kwargs({pos: vec(0, 0, 0), axis: vec(0, 0, 1["-u"]()["*"](distance)), color: color.blue, round: true, shaftwidth: .05})]);
+    "47";
+    xy_plane = ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({size: vec(distance["*"](2), distance["*"](2), .15), color: color.red, opacity: .3, visible: false})]);
+    "48";
+    xz_plane = ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({size: vec(distance["*"](2), .15, distance["*"](2)), color: color.blue, opacity: .3, visible: false})]);
+    "49";
+    yz_plane = ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({size: vec(.15, distance["*"](2), distance["*"](2)), color: color.green, opacity: .3, visible: false})]);
+    "51";
+    tick_marksx = (function() {
+        var ρσ_Iter = range(1, distance), ρσ_Result = [], i;
+        ρσ_Iter = ((typeof ρσ_Iter[Symbol.iterator] === "function") ? (ρσ_Iter instanceof Map ? ρσ_Iter.keys() : ρσ_Iter) : Object.keys(ρσ_Iter));
+        for (var ρσ_Index of ρσ_Iter) {
+            i = ρσ_Index;
+            ρσ_Result.push(ρσ_interpolate_kwargs.call(this, label, [ρσ_desugar_kwargs({pos: vec(i, 0, 0), text: "|", height: 24, box: false, opacity: 0, visible: false})]));
+        }
+        ρσ_Result = ρσ_list_constructor(ρσ_Result);
+        return ρσ_Result;
+    })();
+    "52";
+    tick_marksy = (function() {
+        var ρσ_Iter = range(1, distance), ρσ_Result = [], i;
+        ρσ_Iter = ((typeof ρσ_Iter[Symbol.iterator] === "function") ? (ρσ_Iter instanceof Map ? ρσ_Iter.keys() : ρσ_Iter) : Object.keys(ρσ_Iter));
+        for (var ρσ_Index of ρσ_Iter) {
+            i = ρσ_Index;
+            ρσ_Result.push(ρσ_interpolate_kwargs.call(this, label, [ρσ_desugar_kwargs({pos: vec(0, i, 0), text: "|", height: 24, box: false, opacity: 0, visible: false})]));
+        }
+        ρσ_Result = ρσ_list_constructor(ρσ_Result);
+        return ρσ_Result;
+    })();
+    "53";
+    tick_marksz = (function() {
+        var ρσ_Iter = range(1, distance), ρσ_Result = [], i;
+        ρσ_Iter = ((typeof ρσ_Iter[Symbol.iterator] === "function") ? (ρσ_Iter instanceof Map ? ρσ_Iter.keys() : ρσ_Iter) : Object.keys(ρσ_Iter));
+        for (var ρσ_Index of ρσ_Iter) {
+            i = ρσ_Index;
+            ρσ_Result.push(ρσ_interpolate_kwargs.call(this, label, [ρσ_desugar_kwargs({pos: vec(0, 0, i), text: "―", height: 24, box: false, opacity: 0, visible: false})]));
+        }
+        ρσ_Result = ρσ_list_constructor(ρσ_Result);
+        return ρσ_Result;
+    })();
+    "55";
+    tick_marksinv_x = (function() {
+        var ρσ_Iter = range(1, distance), ρσ_Result = [], i;
+        ρσ_Iter = ((typeof ρσ_Iter[Symbol.iterator] === "function") ? (ρσ_Iter instanceof Map ? ρσ_Iter.keys() : ρσ_Iter) : Object.keys(ρσ_Iter));
+        for (var ρσ_Index of ρσ_Iter) {
+            i = ρσ_Index;
+            ρσ_Result.push(ρσ_interpolate_kwargs.call(this, label, [ρσ_desugar_kwargs({pos: vec(1["-u"]()["*"](i), 0, 0), text: "|", height: 24, box: false, opacity: 0, visible: false})]));
+        }
+        ρσ_Result = ρσ_list_constructor(ρσ_Result);
+        return ρσ_Result;
+    })();
+    "56";
+    tick_marksinv_y = (function() {
+        var ρσ_Iter = range(1, distance), ρσ_Result = [], i;
+        ρσ_Iter = ((typeof ρσ_Iter[Symbol.iterator] === "function") ? (ρσ_Iter instanceof Map ? ρσ_Iter.keys() : ρσ_Iter) : Object.keys(ρσ_Iter));
+        for (var ρσ_Index of ρσ_Iter) {
+            i = ρσ_Index;
+            ρσ_Result.push(ρσ_interpolate_kwargs.call(this, label, [ρσ_desugar_kwargs({pos: vec(0, 1["-u"]()["*"](i), 0), text: "|", height: 24, box: false, opacity: 0, visible: false})]));
+        }
+        ρσ_Result = ρσ_list_constructor(ρσ_Result);
+        return ρσ_Result;
+    })();
+    "57";
+    tick_marksinv_z = (function() {
+        var ρσ_Iter = range(1, distance), ρσ_Result = [], i;
+        ρσ_Iter = ((typeof ρσ_Iter[Symbol.iterator] === "function") ? (ρσ_Iter instanceof Map ? ρσ_Iter.keys() : ρσ_Iter) : Object.keys(ρσ_Iter));
+        for (var ρσ_Index of ρσ_Iter) {
+            i = ρσ_Index;
+            ρσ_Result.push(ρσ_interpolate_kwargs.call(this, label, [ρσ_desugar_kwargs({pos: vec(0, 0, 1["-u"]()["*"](i)), text: "―", height: 24, box: false, opacity: 0, visible: false})]));
+        }
+        ρσ_Result = ρσ_list_constructor(ρσ_Result);
+        return ρσ_Result;
+    })();
+    "61";
+    async function vector_draw() {
+        "62";
+        "63";
+        start_position = mouse.pos;
+        "64";
+        user_arrow = ρσ_interpolate_kwargs.call(this, arrow, [ρσ_desugar_kwargs({pos: vec(start_position), axis: vec(0, 0, 0), color: color.purple, round: true, shaftwidth: .05})]);
+        "65";
+        user_box = ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: user_arrow.pos["+"](user_arrow.axis["/"](2)), size: user_arrow.axis, color: color.cyan, opacity: .25, visible: true})]);
+        "66";
+        if (!show_boxes) {
+            "67";
+            user_box.visible = false;
+        }
+        "68";
+        boxes_list.append(user_box);
+    };
+    if (!vector_draw.__module__) Object.defineProperties(vector_draw, {
+        __module__ : {value: null}
+    });
+
+    "72";
+    async function vector_simulate() {
+        var ρσ_ls, current_positon;
+        "73";
+        current_positon = mouse.pos;
+        "74";
+        if (current_positon) {
+            "80";
+            user_arrow.axis = current_positon["-"](1["*"](user_arrow.pos));
+            "81";
+            user_box.pos = user_arrow.pos["+"](user_arrow.axis["/"](2));
+            "82";
+            user_box.size = user_arrow.axis;
+        }
+    };
+    if (!vector_simulate.__module__) Object.defineProperties(vector_simulate, {
+        __module__ : {value: null}
+    });
+
+    "85";
+    async function origin_switch(event) {
+        var ρσ_ls, i;
+        "86";
+        "87";
+        if (event.checked) {
+            "88";
+            start_from_origin = true;
+            "89";
+            if (!ρσ_in(null, (function(){
+                var s = ρσ_set();
+                s.jsset.add(originX);
+                s.jsset.add(originY);
+                s.jsset.add(originZ);
+                s.jsset.add(endX);
+                s.jsset.add(endY);
+                s.jsset.add(endZ);
+                return s;
+            })())) {
+                "90";
+                var ρσ_Iter1 = ρσ_list_decorate([ originX, originY, originZ, endX, endY, endZ, clearButton ]);
+                ρσ_Iter1 = ((typeof ρσ_Iter1[Symbol.iterator] === "function") ? (ρσ_Iter1 instanceof Map ? ρσ_Iter1.keys() : ρσ_Iter1) : Object.keys(ρσ_Iter1));
+                for (var ρσ_Index1 of ρσ_Iter1) {
+                    i = ρσ_Index1;
+                    "91";
+                    i.remove();
+                }
+            }
+            "92";
+            (await vector_create());
+            "93";
+        } else {
+            "94";
+            start_from_origin = false;
+            "95";
+            if (!ρσ_in(null, (function(){
+                var s = ρσ_set();
+                s.jsset.add(originX);
+                s.jsset.add(originY);
+                s.jsset.add(originZ);
+                s.jsset.add(endX);
+                s.jsset.add(endY);
+                s.jsset.add(endZ);
+                return s;
+            })())) {
+                "96";
+                var ρσ_Iter2 = ρσ_list_decorate([ originX, originY, originZ, endX, endY, endZ, clearButton ]);
+                ρσ_Iter2 = ((typeof ρσ_Iter2[Symbol.iterator] === "function") ? (ρσ_Iter2 instanceof Map ? ρσ_Iter2.keys() : ρσ_Iter2) : Object.keys(ρσ_Iter2));
+                for (var ρσ_Index2 of ρσ_Iter2) {
+                    i = ρσ_Index2;
+                    "97";
+                    i.remove();
+                }
+            }
+            "98";
+            (await vector_create());
+        }
+    };
+    if (!origin_switch.__argnames__) Object.defineProperties(origin_switch, {
+        __argnames__ : {value: ["event"]},
+        __module__ : {value: null}
+    });
+
+    "101";
+    async function toggle_boxes(event) {
+        var ρσ_ls, i;
+        "102";
+        "103";
+        if (event.checked) {
+            "104";
+            show_boxes = true;
+            "105";
+            if (len(boxes_list)[">"](0)) {
+                "106";
+                var ρσ_Iter3 = boxes_list;
+                ρσ_Iter3 = ((typeof ρσ_Iter3[Symbol.iterator] === "function") ? (ρσ_Iter3 instanceof Map ? ρσ_Iter3.keys() : ρσ_Iter3) : Object.keys(ρσ_Iter3));
+                for (var ρσ_Index3 of ρσ_Iter3) {
+                    i = ρσ_Index3;
+                    "107";
+                    i.visible = true;
+                    "108";
+                }
+            }
+        } else {
+            "109";
+            show_boxes = false;
+            "110";
+            if (len(boxes_list)[">"](0)) {
+                "111";
+                var ρσ_Iter4 = boxes_list;
+                ρσ_Iter4 = ((typeof ρσ_Iter4[Symbol.iterator] === "function") ? (ρσ_Iter4 instanceof Map ? ρσ_Iter4.keys() : ρσ_Iter4) : Object.keys(ρσ_Iter4));
+                for (var ρσ_Index4 of ρσ_Iter4) {
+                    i = ρσ_Index4;
+                    "112";
+                    i.visible = false;
+                }
+            }
+        }
+    };
+    if (!toggle_boxes.__argnames__) Object.defineProperties(toggle_boxes, {
+        __argnames__ : {value: ["event"]},
+        __module__ : {value: null}
+    });
+
+    "115";
+    async function doNothing() {
+        "116";
+    };
+    if (!doNothing.__module__) Object.defineProperties(doNothing, {
+        __module__ : {value: null}
+    });
+
+    "119";
+    async function vector_create() {
+        "120";
+        "121";
+        if (!start_from_origin) {
+            (await sleep(.1));
+            "122";
+            originX = ρσ_interpolate_kwargs.call(this, winput, [ρσ_desugar_kwargs({prompt: "Start X:", bind: doNothing, type: "numeric"})]);
+            (await sleep(.1));
+            "123";
+            originY = ρσ_interpolate_kwargs.call(this, winput, [ρσ_desugar_kwargs({prompt: "Start Y:", bind: doNothing, type: "numeric"})]);
+            (await sleep(.1));
+            "124";
+            originZ = ρσ_interpolate_kwargs.call(this, winput, [ρσ_desugar_kwargs({prompt: "Start Z:", bind: doNothing, type: "numeric"})]);
+        }
+        (await sleep(.1));
+        "125";
+        endX = ρσ_interpolate_kwargs.call(this, winput, [ρσ_desugar_kwargs({prompt: "\nEnd X:", bind: doNothing, type: "numeric"})]);
+        (await sleep(.1));
+        "126";
+        endY = ρσ_interpolate_kwargs.call(this, winput, [ρσ_desugar_kwargs({prompt: "End Y:", bind: doNothing, type: "numeric"})]);
+        (await sleep(.1));
+        "127";
+        endZ = ρσ_interpolate_kwargs.call(this, winput, [ρσ_desugar_kwargs({prompt: "End Z:", bind: doNothing, type: "numeric"})]);
+        "128";
+        clearButton = ρσ_interpolate_kwargs.call(this, button, [ρσ_desugar_kwargs({bind: vector_clear, text: "Go!"})]);
+    };
+    if (!vector_create.__module__) Object.defineProperties(vector_create, {
+        __module__ : {value: null}
+    });
+
+    "131";
+    async function vector_clear() {
+        var ρσ_ls, i;
+        "132";
+        "133";
+        if (!start_from_origin) {
+            "134";
+            if (!ρσ_in("", (function(){
+                var s = ρσ_set();
+                s.jsset.add(originX.text);
+                s.jsset.add(originY.text);
+                s.jsset.add(originZ.text);
+                return s;
+            })())) {
+                "135";
+                drawnVector = ρσ_interpolate_kwargs.call(this, arrow, [ρσ_desugar_kwargs({pos: vec(float(originX.text), float(originY.text), float(originZ.text)), axis: vec(float(endX.text)["-"](1["*"](float(originX.text))), float(endY.text)["-"](1["*"](float(originY.text))), float(endZ.text)["-"](1["*"](float(originZ.text)))), color: color.purple, round: true, shaftwidth: .05})]);
+                "136";
+                drawnBox = ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: drawnVector.pos["+"](drawnVector.axis["/"](2)), size: drawnVector.axis, color: color.cyan, opacity: .25})]);
+                "137";
+                if (!show_boxes) {
+                    "138";
+                    drawnBox.visible = false;
+                }
+                "139";
+                boxes_list.append(drawnBox);
+                "140";
+            } else {
+                "141";
+                print("Please enter 3 origin values.");
+                "142";
+            }
+        } else {
+            "143";
+            if (!ρσ_in("", (function(){
+                var s = ρσ_set();
+                s.jsset.add(endX.text);
+                s.jsset.add(endY.text);
+                s.jsset.add(endZ.text);
+                return s;
+            })())) {
+                "144";
+                drawnVector = ρσ_interpolate_kwargs.call(this, arrow, [ρσ_desugar_kwargs({pos: vec(0, 0, 0), axis: vec(float(endX.text), float(endY.text), float(endZ.text)), color: color.purple, round: true, shaftwidth: .05})]);
+                "145";
+                drawnBox = ρσ_interpolate_kwargs.call(this, box, [ρσ_desugar_kwargs({pos: drawnVector.pos["+"](drawnVector.axis["/"](2)), size: drawnVector.axis, color: color.cyan, opacity: .25})]);
+                "146";
+                if (!show_boxes) {
+                    "147";
+                    drawnBox.visible = false;
+                }
+                "148";
+                boxes_list.append(drawnBox);
+                "149";
+            } else {
+                "150";
+                print("Please enter 3 end values.");
+                "152";
+            }
+        }
+        if (!ρσ_in(null, (function(){
+            var s = ρσ_set();
+            s.jsset.add(originX);
+            s.jsset.add(originY);
+            s.jsset.add(originZ);
+            s.jsset.add(endX);
+            s.jsset.add(endY);
+            s.jsset.add(endZ);
+            return s;
+        })())) {
+            "153";
+            var ρσ_Iter5 = ρσ_list_decorate([ originX, originY, originZ, endX, endY, endZ, clearButton ]);
+            ρσ_Iter5 = ((typeof ρσ_Iter5[Symbol.iterator] === "function") ? (ρσ_Iter5 instanceof Map ? ρσ_Iter5.keys() : ρσ_Iter5) : Object.keys(ρσ_Iter5));
+            for (var ρσ_Index5 of ρσ_Iter5) {
+                i = ρσ_Index5;
+                "154";
+                i.remove();
+            }
+        }
+        "155";
+        (await vector_create());
+    };
+    if (!vector_clear.__module__) Object.defineProperties(vector_clear, {
+        __module__ : {value: null}
+    });
+
+    "159";
+    async function mode_changer(event) {
+        var ρσ_ls, i;
+        "160";
+        "161";
+        scene.unbind("mousedown", vector_draw);
+        "162";
+        scene.unbind("mousemove", vector_simulate);
+        "164";
+        if ((event.index === 0 || typeof event.index === "object" && ρσ_equals(event.index, 0))) {
+            "165";
+            mode = "draw";
+            "166";
+            scene.bind("mousedown", vector_draw);
+            "167";
+            scene.bind("mousemove", vector_simulate);
+            "168";
+            if (!ρσ_in(null, (function(){
+                var s = ρσ_set();
+                s.jsset.add(originX);
+                s.jsset.add(originY);
+                s.jsset.add(originZ);
+                s.jsset.add(endX);
+                s.jsset.add(endY);
+                s.jsset.add(endZ);
+                return s;
+            })())) {
+                "169";
+                var ρσ_Iter6 = ρσ_list_decorate([ originX, originY, originZ, endX, endY, endZ, clearButton, origin_checker ]);
+                ρσ_Iter6 = ((typeof ρσ_Iter6[Symbol.iterator] === "function") ? (ρσ_Iter6 instanceof Map ? ρσ_Iter6.keys() : ρσ_Iter6) : Object.keys(ρσ_Iter6));
+                for (var ρσ_Index6 of ρσ_Iter6) {
+                    i = ρσ_Index6;
+                    "170";
+                    i.remove();
+                    "173";
+                }
+            }
+        }
+        if ((event.index === 1 || typeof event.index === "object" && ρσ_equals(event.index, 1))) {
+            "174";
+            mode = "vector";
+            "175";
+            origin_checker = ρσ_interpolate_kwargs.call(this, checkbox, [ρσ_desugar_kwargs({bind: origin_switch, text: "Start from Origin\n"})]);
+            "176";
+            scene.unbind("mousedown", vector_draw);
+            "177";
+            scene.unbind("mousemove", vector_simulate);
+            "178";
+            (await vector_create());
+        }
+    };
+    if (!mode_changer.__argnames__) Object.defineProperties(mode_changer, {
+        __argnames__ : {value: ["event"]},
+        __module__ : {value: null}
+    });
+
+    "182";
+    async function show_axisplanes(event) {
+        "183";
+        xy_plane.visible = xz_plane.visible = yz_plane.visible = event.checked;
+    };
+    if (!show_axisplanes.__argnames__) Object.defineProperties(show_axisplanes, {
+        __argnames__ : {value: ["event"]},
+        __module__ : {value: null}
+    });
+
+    "187";
+    async function show_invertedaxes(event) {
+        var ρσ_ls, i;
+        "188";
+        x_inv_axis.visible = y_inv_axis.visible = z_inv_axis.visible = event.checked;
+        "190";
+        if (event.checked && (tick_marks === true || typeof tick_marks === "object" && ρσ_equals(tick_marks, true))) {
+            "191";
+            for (var ρσ_Index7 = 0; ρσ_Index7["<"](distance["-"](1)); ρσ_Index7++) {
+                i = ρσ_Index7;
+                "192";
+                ρσ_getitem(tick_marksinv_x, i).visible = ρσ_getitem(tick_marksinv_y, i).visible = ρσ_getitem(tick_marksinv_z, i).visible = true;
+                "193";
+            }
+        } else {
+            "194";
+            for (var ρσ_Index8 = 0; ρσ_Index8["<"](distance["-"](1)); ρσ_Index8++) {
+                i = ρσ_Index8;
+                "195";
+                ρσ_getitem(tick_marksinv_x, i).visible = ρσ_getitem(tick_marksinv_y, i).visible = ρσ_getitem(tick_marksinv_z, i).visible = false;
+            }
+        }
+    };
+    if (!show_invertedaxes.__argnames__) Object.defineProperties(show_invertedaxes, {
+        __argnames__ : {value: ["event"]},
+        __module__ : {value: null}
+    });
+
+    "199";
+    async function show_tickmarks(event) {
+        var ρσ_ls, i;
+        "200";
+        "201";
+        if (event.checked) {
+            "202";
+            tick_marks = true;
+            "203";
+            for (var ρσ_Index9 = 0; ρσ_Index9["<"](distance["-"](1)); ρσ_Index9++) {
+                i = ρσ_Index9;
+                "204";
+                ρσ_getitem(tick_marksx, i).visible = ρσ_getitem(tick_marksy, i).visible = ρσ_getitem(tick_marksz, i).visible = true;
+                "205";
+                if ((x_inv_axis.visible === true || typeof x_inv_axis.visible === "object" && ρσ_equals(x_inv_axis.visible, true))) {
+                    "206";
+                    ρσ_getitem(tick_marksinv_x, i).visible = ρσ_getitem(tick_marksinv_y, i).visible = ρσ_getitem(tick_marksinv_z, i).visible = true;
+                    "207";
+                }
+            }
+        } else {
+            "208";
+            tick_marks = false;
+            "209";
+            for (var ρσ_Index10 = 0; ρσ_Index10["<"](distance["-"](1)); ρσ_Index10++) {
+                i = ρσ_Index10;
+                "210";
+                ρσ_getitem(tick_marksx, i).visible = ρσ_getitem(tick_marksy, i).visible = ρσ_getitem(tick_marksz, i).visible = false;
+                "211";
+                ρσ_getitem(tick_marksinv_x, i).visible = ρσ_getitem(tick_marksinv_y, i).visible = ρσ_getitem(tick_marksinv_z, i).visible = false;
+            }
+        }
+    };
+    if (!show_tickmarks.__argnames__) Object.defineProperties(show_tickmarks, {
+        __argnames__ : {value: ["event"]},
+        __module__ : {value: null}
+    });
+
+    "215";
+    async function cursor_checker(cursor_marker) {
+        var ρσ_ls, current_object, local_magnitude, local_start, local_end, local_alpha, local_beta, local_gamma;
+        "216";
+        if (mouse.pick()) {
+            "217";
+            if (ρσ_equals(mouse.pick(), x_axis)) {
+                "218";
+                cursor_marker.visible = true;
+                "219";
+                cursor_marker.text = "X-Axis!";
+                "220";
+                cursor_marker.pos = mouse.pos;
+                "222";
+            }
+            if (ρσ_equals(mouse.pick(), y_axis)) {
+                "223";
+                cursor_marker.visible = true;
+                "224";
+                cursor_marker.text = "Y-Axis!";
+                "225";
+                cursor_marker.pos = mouse.pos;
+                "227";
+            }
+            if (ρσ_equals(mouse.pick(), z_axis)) {
+                "228";
+                cursor_marker.visible = true;
+                "229";
+                cursor_marker.text = "Z-Axis!";
+                "230";
+                cursor_marker.pos = mouse.pos;
+                "232";
+            }
+            if (ρσ_equals(mouse.pick(), x_inv_axis)) {
+                "233";
+                cursor_marker.visible = true;
+                "234";
+                cursor_marker.text = "-X-Axis!";
+                "235";
+                cursor_marker.pos = mouse.pos;
+                "237";
+            }
+            if (ρσ_equals(mouse.pick(), y_inv_axis)) {
+                "238";
+                cursor_marker.visible = true;
+                "239";
+                cursor_marker.text = "-Y-Axis!";
+                "240";
+                cursor_marker.pos = mouse.pos;
+                "242";
+            }
+            if (ρσ_equals(mouse.pick(), z_inv_axis)) {
+                "243";
+                cursor_marker.visible = true;
+                "244";
+                cursor_marker.text = "-Z-Axis!";
+                "245";
+                cursor_marker.pos = mouse.pos;
+                "247";
+            }
+            if (ρσ_instanceof(mouse.pick(), arrow) && !ρσ_in(mouse.pick, (function(){
+                var s = ρσ_set();
+                s.jsset.add(x_axis);
+                s.jsset.add(y_axis);
+                s.jsset.add(z_axis);
+                s.jsset.add(x_inv_axis);
+                s.jsset.add(y_inv_axis);
+                s.jsset.add(z_inv_axis);
+                return s;
+            })())) {
+                "248";
+                current_object = mouse.pick();
+                "249";
+                if (current_object) {
+                    "250";
+                    local_magnitude = current_object.axis.mag;
+                    "251";
+                    local_start = [round(current_object.pos.x, 2), round(current_object.pos.y, 2), round(current_object.pos.z, 2)];
+                    "252";
+                    local_end = [round(current_object.axis.x, 2), round(current_object.axis.x, 2), round(current_object.axis.x, 2)];
+                    "253";
+                    local_alpha = round((await degrees(acos(float(current_object.axis.x)["/"](float(local_magnitude))))), 2);
+                    "254";
+                    local_beta = round((await degrees(acos(float(current_object.axis.y)["/"](float(local_magnitude))))), 2);
+                    "255";
+                    local_gamma = round((await degrees(acos(float(current_object.axis.z)["/"](float(local_magnitude))))), 2);
+                    "256";
+                    cursor_marker.text = "Generated Vector\nMagnitude: "["+"](str(round(local_magnitude, 3)))["+"]("\nFrom ")["+"](str(local_start))["+"]("\nTo ")["+"](str(local_end))["+"]("\nα=")["+"](str(local_alpha))["+"]("\nß=")["+"](str(local_beta))["+"]("\nΓ=")["+"](str(local_gamma));
+                    "257";
+                    cursor_marker.visible = true;
+                    "258";
+                    cursor_marker.pos = mouse.pos;
+                    "259";
+                }
+            }
+        } else {
+            "260";
+            cursor_marker.visible = false;
+        }
+    };
+    if (!cursor_checker.__argnames__) Object.defineProperties(cursor_checker, {
+        __argnames__ : {value: ["cursor_marker"]},
+        __module__ : {value: null}
+    });
+
+    "264";
+    scene.append_to_caption("Mode: ");
+    "265";
+    ρσ_interpolate_kwargs.call(this, menu, [ρσ_desugar_kwargs({bind: mode_changer, choices: modes, selected: "Current", index: 0})]);
+    "266";
+    scene.append_to_caption("   ");
+    "267";
+    inverted_checker = ρσ_interpolate_kwargs.call(this, checkbox, [ρσ_desugar_kwargs({bind: show_invertedaxes, text: "Show Inverted Axes  ", checked: true})]);
+    "268";
+    tick_checker = ρσ_interpolate_kwargs.call(this, checkbox, [ρσ_desugar_kwargs({bind: show_tickmarks, text: "Show Tick Marks   ", checked: false})]);
+    "269";
+    axis_checker = ρσ_interpolate_kwargs.call(this, checkbox, [ρσ_desugar_kwargs({bind: show_axisplanes, text: "Show Axis Planes  ", checked: false})]);
+    "270";
+    box_checker = ρσ_interpolate_kwargs.call(this, checkbox, [ρσ_desugar_kwargs({bind: toggle_boxes, text: "Show Box Guides  ", checked: false})]);
+    "271";
+    scene.append_to_caption("\n\n");
+    "274";
+    scene.bind("mousedown", vector_draw);
+    "275";
+    scene.bind("mousemove", vector_simulate);
+    "278";
+    while (true) {
+        "279";
+        (await cursor_checker(cursor_marker));
+        "280";
+        draw_range = scene.range;
+        "281";
+        (await rate(20));
+    }
+};
+if (!__main__.__module__) Object.defineProperties(__main__, {
+    __module__ : {value: null}
+});
+
+;$(function(){ window.__context = { glowscript_container: $("#glowscript").removeAttr("id") }; __main__() })})()
+// END JAVASCRIPT
+
+//--><!]]></script>
+</div>
