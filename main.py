@@ -3,7 +3,7 @@ from vpython import *
 from math import * #Delete this if using Web VPython
 
 #Create scene and regulatory conditions
-scene = canvas(width=1200, height=425, background=color.white, resizable=True, title="Vector3D - A Vector Mapping Tool (V1.0)                        Created by <a href='https://github.com/Sir-Nooby' target='_blank'>SirNooby</a> and <a href='https://github.com/ZakichanMC' target='_blank'>Zakichan</a>                                   Need Help? <a href='https://github.com/Sir-Nooby/vector3' target='_blank'> Read the Vector3D Documentation</a>") #Chamge the height if using Web VPython (475)
+scene = canvas(width=1200, height=425, background=color.white, resizable=True, title="Vector3D - A Vector Mapping Tool (V1.0)                        Created by <a href='https://github.com/Sir-Nooby' target='_blank'>SirNooby</a> and <a href='https://github.com/ZakichanMC' target='_blank'>Zakichan</a>                                   Need Help? <a href='https://github.com/Sir-Nooby/vector3D' target='_blank'> Read the Vector3D Documentation</a>") #Chamge the height if using Web VPython (475)
 scene.ambient = color.white * 0.8
 
 global mouse
