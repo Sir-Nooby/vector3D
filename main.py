@@ -249,7 +249,7 @@ def cursor_checker(cursor_marker):
             if current_object:
                 local_magnitude = current_object.axis.mag
                 local_start = round(current_object.pos.x, 2), round(current_object.pos.y, 2), round(current_object.pos.z, 2)
-                local_end = round(current_object.axis.x, 2), round(current_object.axis.x, 2), round(current_object.axis.x, 2)
+                local_end = round(current_object.axis.x, 2), round(current_object.axis.y, 2), round(current_object.axis.z, 2)
                 local_alpha = round(degrees(acos(float(current_object.axis.x)/float(local_magnitude))), 2)
                 local_beta = round(degrees(acos(float(current_object.axis.y)/float(local_magnitude))), 2)
                 local_gamma = round(degrees(acos(float(current_object.axis.z)/float(local_magnitude))), 2)
