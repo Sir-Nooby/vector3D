@@ -1,6 +1,19 @@
 # Vector 3D - A 3D Vector Simulation Tool
 
-Thanks for using our program!
+# Controls:
+
+**Windows:** <br>
+Spin/Tilt Camera: Hold Right Click and move your mouse around <br>
+Zoom In/Out: Scroll Wheel or two fingers up and down on trackpad <br>
+
+**Mac:** <br>
+Spin/Tilt Camera: Hold Control + Click and move your mouse around <br>
+Zoom In/Out: Scroll Wheel or two fingers up and down on trackpad <br>
+
+**Mobile:** <br>
+Spin/Tilt Camera: Tap and move your fingers around <br>
+Zoom In/Out: Pinch inwards or outwards <br>
+Rotate Camera: Twist your fingers in a spin-like motion <br>
 
 # Modes:
 
