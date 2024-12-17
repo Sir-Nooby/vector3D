@@ -1,4 +1,3 @@
-Web VPython 3.2
 #Vector 3D - An interactive python-based web app for mapping vectors - By SirNooby and Zakichan (Sirzak)
 from vpython import *
 
