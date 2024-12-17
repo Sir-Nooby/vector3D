@@ -13,4 +13,6 @@ Comprehensive Mini Guide on Converting into HTML:
 If you require to change the title line, here is the base code since the Glowscript editor has weird line spacing.
 
 
-scene = canvas(width=1200, height=425, background=color.white, resizable=False, title="Vector3D - A Vector Mapping Tool                         Created by <a href='https://github.com/Sir-Nooby' target='_blank'>SirNooby</a> and <a href='https://github.com/ZakichanMC' target='_blank'>Zakichan</a>                                   Need Help? <a href='https://github.com/Sir-Nooby/vector3' target='_blank'> Read the Vector3D Documentation</a>")
+scene = canvas(width=1200, height=425, background=color.white, resizable=True, title="Vector3D - A Vector Mapping Tool (V1.0)                        Created by <a href='https://github.com/Sir-Nooby' target='_blank'>SirNooby</a> and <a href='https://github.com/ZakichanMC' target='_blank'>Zakichan</a>                                   Need Help? <a href=https://github.com/Sir-Nooby/vector3D?tab=readme-ov-file#vector-3d---a-3d-vector-simulation-tool target='_blank'> Read the Vector3D Documentation</a>") #Change the height if using Web VPython (475)
+
+Also Line ~247 checks if the color is purple, its very unoptimized but fixes a web issue
