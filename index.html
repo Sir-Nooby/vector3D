@@ -73,7 +73,7 @@ async function __main__() {
 
     strings();
     "6";
-    scene = ρσ_interpolate_kwargs.call(this, canvas, [ρσ_desugar_kwargs({width: 1200, height: 425, background: color.white, resizable: true, title: "Vector3D - A Vector Mapping Tool (V1.0)                        Created by <a href='https://github.com/Sir-Nooby' target='_blank'>SirNooby<\/a> and <a href='https://github.com/ZakichanMC' target='_blank'>Zakichan</a>                                   Need Help? <a href='https://github.com/Sir-Nooby/vector3D' target='_blank'> Read the Vector3D Documentation</a>"})]);
+    scene = ρσ_interpolate_kwargs.call(this, canvas, [ρσ_desugar_kwargs({width: 1200, height: 475, background: color.white, resizable: true, title: "Vector3D - A Vector Mapping Tool (V1.01)                        Created by <a href='https://github.com/Sir-Nooby' target='_blank'>SirNooby<\/a> and <a href='https://github.com/ZakichanMC' target='_blank'>Zakichan</a>                                   Need Help? <a href=https://github.com/Sir-Nooby/vector3D?tab=readme-ov-file#vector-3d---a-3d-vector-simulation-tool target='_blank'> Read the Vector3D Documentation</a>"})]);
     "7";
     scene.ambient = color.white["*"](.8);
     "9";
@@ -664,16 +664,7 @@ async function __main__() {
                 cursor_marker.pos = mouse.pos;
                 "247";
             }
-            if (ρσ_instanceof(mouse.pick(), arrow) && !ρσ_in(mouse.pick, (function(){
-                var s = ρσ_set();
-                s.jsset.add(x_axis);
-                s.jsset.add(y_axis);
-                s.jsset.add(z_axis);
-                s.jsset.add(x_inv_axis);
-                s.jsset.add(y_inv_axis);
-                s.jsset.add(z_inv_axis);
-                return s;
-            })())) {
+            if ((mouse.pick().color === color.purple || typeof mouse.pick().color === "object" && ρσ_equals(mouse.pick().color, color.purple))) {
                 "248";
                 current_object = mouse.pick();
                 "249";
