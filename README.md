@@ -2,9 +2,6 @@
 
 Thanks for using our program!
 
-I will be updating this documentation soon!!
-
-For now,
 # Modes:
 
 ## Draw Mode:
