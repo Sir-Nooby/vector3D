@@ -1,9 +1,9 @@
+Web VPython 3.2
 #Vector 3D - An interactive python-based web app for mapping vectors - By SirNooby and Zakichan (Sirzak)
 from vpython import *
-from math import * #Delete this if using Web VPython
 
 #Create scene and regulatory conditions
-scene = canvas(width=1200, height=425, background=color.white, resizable=True, title="Vector3D - A Vector Mapping Tool (V1.0)                        Created by <a href='https://github.com/Sir-Nooby' target='_blank'>SirNooby</a> and <a href='https://github.com/ZakichanMC' target='_blank'>Zakichan</a>                                   Need Help? <a href='https://github.com/Sir-Nooby/vector3D' target='_blank'> Read the Vector3D Documentation</a>") #Chamge the height if using Web VPython (475)
+scene = canvas(width=1200, height=475, background=color.white, resizable=True, title="Vector3D - A Vector Mapping Tool (V1.01)                        Created by <a href='https://github.com/Sir-Nooby' target='_blank'>SirNooby</a> and <a href='https://github.com/ZakichanMC' target='_blank'>Zakichan</a>                                   Need Help? <a href=https://github.com/Sir-Nooby/vector3D?tab=readme-ov-file#vector-3d---a-3d-vector-simulation-tool target='_blank'> Read the Vector3D Documentation</a>") #Chamge the height if using Web VPython (475)
 scene.ambient = color.white * 0.8
 
 global mouse
@@ -218,33 +218,33 @@ def cursor_checker(cursor_marker):
             cursor_marker.visible = True
             cursor_marker.text = "X-Axis!"
             cursor_marker.pos = mouse.pos
-
+    
         if mouse.pick == y_axis:
             cursor_marker.visible = True
             cursor_marker.text = "Y-Axis!"
             cursor_marker.pos = mouse.pos
-        
+            
         if mouse.pick == z_axis:
             cursor_marker.visible = True
             cursor_marker.text = "Z-Axis!"
             cursor_marker.pos = mouse.pos
-
+    
         if mouse.pick == x_inv_axis:
             cursor_marker.visible = True
             cursor_marker.text = "-X-Axis!"
             cursor_marker.pos = mouse.pos
-        
+            
         if mouse.pick == y_inv_axis:
             cursor_marker.visible = True
             cursor_marker.text = "-Y-Axis!"
             cursor_marker.pos = mouse.pos
-        
+            
         if mouse.pick == z_inv_axis:
             cursor_marker.visible = True
             cursor_marker.text = "-Z-Axis!"
             cursor_marker.pos = mouse.pos
 
-        if isinstance(mouse.pick, arrow) and mouse.pick not in {x_axis, y_axis, z_axis, x_inv_axis, y_inv_axis, z_inv_axis}:
+        if mouse.pick.color == color.purple:
             current_object = mouse.pick
             if current_object:
                 local_magnitude = current_object.axis.mag
